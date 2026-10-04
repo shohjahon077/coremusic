@@ -3,41 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CoreMusic — Pulse of the Night</title>
+    <title>CoreMusic — Immersive Audio Universe</title>
     <style>
       :root {
-        --bg: #060914;
-        --bg-2: #0f172a;
-        --bg-3: #121b31;
-        --panel: rgba(15, 23, 42, 0.72);
-        --panel-strong: rgba(9, 17, 29, 0.85);
-        --elevated: rgba(18, 27, 41, 0.88);
-        --border: rgba(255, 255, 255, 0.08);
+        --bg: #050b14;
+        --bg-2: #0b1421;
+        --bg-3: #101c2d;
+        --panel: rgba(11, 18, 31, 0.8);
+        --panel-strong: rgba(8, 14, 25, 0.94);
+        --panel-light: rgba(16, 26, 39, 0.7);
         --soft: rgba(255,255,255,0.04);
-        --text: #edf8ff;
-        --muted: #a9bfd7;
+        --line: rgba(255,255,255,0.08);
+        --text: #edf7ff;
+        --muted: #a9bad0;
         --primary: #7ef9d3;
         --cyan: #67d9ff;
         --blue: #7aa7ff;
         --pink: #ff7ad9;
         --gold: #ffd166;
-        --violet: #8f7cff;
-        --green: #52f2a5;
-        --shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+        --violet: #8b7cff;
+        --green: #57f2a2;
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
       }
 
       * { box-sizing: border-box; }
       html { scroll-behavior: smooth; }
       body {
         margin: 0;
+        color: var(--text);
         min-height: 100vh;
         font-family: Inter, "Segoe UI", sans-serif;
-        color: var(--text);
         background:
-          radial-gradient(circle at 20% 10%, rgba(126, 249, 211, 0.18), transparent 24%),
-          radial-gradient(circle at 80% 8%, rgba(122, 167, 255, 0.22), transparent 28%),
-          radial-gradient(circle at 50% 100%, rgba(255, 122, 217, 0.18), transparent 28%),
-          linear-gradient(135deg, var(--bg), var(--bg-2) 35%, var(--bg-3));
+          radial-gradient(circle at 15% 7%, rgba(126,249,211,0.18), transparent 22%),
+          radial-gradient(circle at 85% 8%, rgba(122,167,255,0.18), transparent 26%),
+          radial-gradient(circle at 60% 100%, rgba(255,122,217,0.12), transparent 28%),
+          linear-gradient(135deg, var(--bg), var(--bg-2) 32%, var(--bg-3));
         overflow-x: hidden;
       }
 
@@ -58,21 +58,21 @@
       img { max-width: 100%; display: block; }
 
       .container {
-        width: min(1280px, calc(100% - 32px));
+        width: min(1280px, calc(100% - 36px));
         margin: 0 auto;
       }
 
       header {
         position: sticky;
         top: 0;
-        z-index: 30;
+        z-index: 40;
+        background: rgba(5, 11, 20, 0.35);
         backdrop-filter: blur(18px);
-        background: rgba(6, 9, 20, 0.35);
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--line);
       }
 
       .nav {
-        min-height: 78px;
+        min-height: 82px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -84,19 +84,18 @@
         align-items: center;
         gap: 12px;
         font-weight: 900;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.09em;
         text-transform: uppercase;
       }
 
       .brand-mark {
-        width: 42px;
-        height: 42px;
+        width: 42px; height: 42px;
         border-radius: 14px;
+        background: linear-gradient(135deg, var(--primary), var(--cyan));
         display: grid;
         place-items: center;
-        background: linear-gradient(135deg, var(--primary), var(--cyan));
-        color: #072435;
-        box-shadow: 0 12px 24px rgba(126, 249, 211, 0.3);
+        color: #061d31;
+        box-shadow: 0 16px 30px rgba(126,249,211,0.25);
       }
 
       .nav-links {
@@ -104,19 +103,22 @@
         align-items: center;
         gap: 28px;
         color: var(--muted);
-        font-size: 0.95rem;
       }
 
       .nav-links a { transition: 0.2s ease; }
       .nav-links a:hover { color: var(--text); }
 
-      .nav-actions { display: flex; align-items: center; gap: 12px; }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
       .btn {
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid var(--line);
         background: rgba(255,255,255,0.02);
         color: var(--text);
-        padding: 11px 16px;
+        padding: 11px 18px;
         border-radius: 12px;
         cursor: pointer;
         transition: 0.2s ease;
@@ -124,25 +126,25 @@
 
       .btn:hover {
         transform: translateY(-1px);
-        border-color: rgba(255,255,255,0.18);
+        border-color: rgba(255,255,255,0.12);
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, var(--primary), var(--cyan));
-        color: #041b2d;
         border: none;
-        font-weight: 800;
-        box-shadow: 0 14px 30px rgba(103, 217, 255, 0.22);
+        background: linear-gradient(135deg, var(--primary), var(--cyan));
+        color: #041d2f;
+        box-shadow: 0 16px 30px rgba(126,249,211,0.24);
+        font-weight: 900;
       }
 
       .hero {
-        padding: 78px 0 30px;
+        padding: 82px 0 34px;
       }
 
       .hero-grid {
         display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        gap: 32px;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 38px;
         align-items: center;
       }
 
@@ -153,7 +155,7 @@
         padding: 8px 14px;
         border-radius: 999px;
         background: rgba(255,255,255,0.04);
-        border: 1px solid var(--border);
+        border: 1px solid var(--line);
         color: var(--primary);
         font-size: 0.72rem;
         letter-spacing: 0.12em;
@@ -161,18 +163,18 @@
       }
 
       h1 {
-        margin: 18px 0 16px;
-        font-size: clamp(2.9rem, 5vw, 6rem);
-        line-height: 0.9;
-        letter-spacing: -0.08em;
+        margin: 18px 0 18px;
+        font-size: clamp(3.1rem, 5.5vw, 6rem);
+        line-height: 0.92;
+        letter-spacing: -0.09em;
       }
 
       .lead {
-        max-width: 680px;
-        color: var(--muted);
         font-size: 1.08rem;
-        line-height: 1.75;
-        margin-bottom: 26px;
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 700px;
+        margin-bottom: 24px;
       }
 
       .hero-actions {
@@ -186,129 +188,135 @@
         display: flex;
         flex-wrap: wrap;
         gap: 28px;
-        margin-top: 30px;
+        margin-top: 34px;
       }
 
       .stat strong {
         display: block;
-        font-size: clamp(1.5rem, 2vw, 2.2rem);
+        font-size: clamp(1.6rem, 2vw, 2.2rem);
         letter-spacing: -0.05em;
       }
 
       .stat span {
-        display: block;
         color: var(--muted);
         font-size: 0.9rem;
       }
 
       .showcase {
         position: relative;
-        min-height: 540px;
+        height: 565px;
       }
 
-      .orbit-ring {
+      .orbital-ring {
         position: absolute;
-        inset: 20px 30px 24px 10px;
-        border-radius: 30px;
+        inset: 32px 24px 26px 16px;
+        border-radius: 32px;
+        background: rgba(18, 28, 42, 0.36);
         border: 1px solid rgba(255,255,255,0.08);
-        background: rgba(9, 17, 29, 0.42);
-        box-shadow: inset 0 0 80px rgba(103, 217, 255, 0.12);
+        box-shadow: inset 0 0 60px rgba(103, 217, 255, 0.08);
       }
 
-      .orb {
-        position: absolute;
-        inset: 18% 12% 18% auto;
-        width: 220px;
-        height: 220px;
-        border-radius: 50%;
-        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(126,249,211,0.55) 25%, rgba(122,167,255,0.35) 44%, rgba(255,122,217,0.18) 68%, rgba(9,17,29,0.1) 100%);
-        box-shadow:
-          0 0 55px rgba(126,249,211,0.2),
-          0 0 100px rgba(122,167,255,0.18),
-          inset 0 0 24px rgba(255,255,255,0.28);
-        animation: float 8s ease-in-out infinite;
-      }
-
-      .orb::before {
+      .orbital-ring::before,
+      .orbital-ring::after {
         content: "";
         position: absolute;
-        inset: 20px;
         border-radius: 50%;
-        border: 1px solid rgba(255,255,255,0.35);
-      }
-
-      @keyframes float {
-        0%, 100% { transform: translateY(0) scale(1); }
-        50% { transform: translateY(-16px) scale(1.04); }
-      }
-
-      .screen {
-        position: absolute;
-        right: 20px;
-        bottom: 20px;
-        width: min(500px, 82%);
-        background: linear-gradient(180deg, rgba(16,24,39,0.92), rgba(8,16,28,0.94));
         border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 28px;
-        box-shadow: var(--shadow);
-        overflow: hidden;
       }
 
-      .screen-header {
+      .orbital-ring::before {
+        width: 260px;
+        height: 260px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .orbital-ring::after {
+        width: 340px;
+        height: 340px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .glow-orb {
+        position: absolute;
+        right: 8%;
+        top: 14%;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(126,249,211,0.74) 24%, rgba(122,167,255,0.36) 48%, rgba(255,122,217,0.24) 68%, rgba(7, 17, 26, 0.04) 100%);
+        box-shadow: 0 0 80px rgba(126,249,211,0.24), 0 0 140px rgba(122,167,255,0.18);
+        animation: floaty 8s ease-in-out infinite;
+      }
+
+      @keyframes floaty {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-18px) scale(1.04); }
+      }
+
+      .dashboard {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        width: min(520px, 85%);
+        background: linear-gradient(180deg, rgba(17,24,39,0.92), rgba(8,15,24,0.96));
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .dash-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 16px 18px 12px;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--line);
       }
 
-      .dots { display: flex; align-items: center; gap: 8px; }
-      .dot {
-        width: 10px; height: 10px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.22);
-      }
-      .dot:nth-child(1) { background: #ff5f57; }
-      .dot:nth-child(2) { background: #febc2e; }
-      .dot:nth-child(3) { background: #28c840; }
+      .dot-group { display: flex; align-items: center; gap: 8px; }
+      .dot { width: 11px; height: 11px; border-radius: 50%; }
+      .dot:nth-child(1){ background: #ff5f57; }
+      .dot:nth-child(2){ background: #febc2e; }
+      .dot:nth-child(3){ background: #28c840; }
 
-      .screen-body { padding: 18px; }
+      .dash-body { padding: 18px; }
 
-      .album-visual {
+      .album-art {
         position: relative;
         height: 210px;
-        border-radius: 20px;
+        border-radius: 18px;
         background:
-          linear-gradient(135deg, rgba(255,122,217,0.46), rgba(103,217,255,0.32)),
-          linear-gradient(135deg, #1e1f50, #0b0f1a 48%, #101a2a);
+          linear-gradient(135deg, rgba(255,122,217,0.42), rgba(126,249,211,0.25)),
+          linear-gradient(135deg, #1a1e49, #0b0f1a 50%, #101a2a);
+        box-shadow: inset 0 0 28px rgba(255,255,255,0.08);
         overflow: hidden;
-        box-shadow: inset 0 0 25px rgba(255,255,255,0.08);
       }
 
-      .album-visual::before {
+      .album-art::before {
         content: "";
         position: absolute;
-        inset: 22px;
+        inset: 20px;
         border-radius: 50%;
         border: 1px solid rgba(255,255,255,0.18);
-        background: rgba(8, 18, 30, 0.14);
-        box-shadow: inset 0 0 30px rgba(0,0,0,0.22);
+        background: rgba(10, 18, 31, 0.14);
       }
 
-      .album-visual::after {
+      .album-art::after {
         content: "";
         position: absolute;
-        width: 116px;
-        height: 116px;
-        border-radius: 50%;
-        left: 50%;
-        top: 50%;
+        width: 120px; height: 120px;
+        left: 50%; top: 50%;
         transform: translate(-50%, -50%);
-        background: radial-gradient(circle at center, rgba(255,255,255,0.85), rgba(126,249,211,0.55), rgba(122,167,255,0.35), rgba(0,0,0,0.1));
-        box-shadow: 0 0 55px rgba(126,249,211,0.55);
+        border-radius: 50%;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.88), rgba(126,249,211,0.58) 20%, rgba(122,167,255,0.42) 50%, rgba(0,0,0,0.14) 100%);
+        box-shadow: 0 0 60px rgba(126,249,211,0.42);
       }
 
-      .track-panel {
+      .track-stack {
         margin-top: 18px;
         display: grid;
         gap: 12px;
@@ -320,9 +328,9 @@
         justify-content: space-between;
         gap: 12px;
         padding: 10px 12px;
+        border-radius: 12px;
         background: rgba(255,255,255,0.025);
         border: 1px solid rgba(255,255,255,0.05);
-        border-radius: 12px;
       }
 
       .track-left {
@@ -332,43 +340,50 @@
       }
 
       .mini-badge {
-        width: 32px; height: 32px;
-        border-radius: 10px;
+        width: 34px; height: 34px;
+        border-radius: 11px;
         display: grid;
         place-items: center;
-        font-weight: 800;
-        color: #061f2f;
         background: linear-gradient(135deg, var(--primary), var(--cyan));
+        color: #071d2f;
+        font-weight: 900;
       }
 
-      .track-mini strong, .track-mini span { display: block; }
-      .track-mini span { color: var(--muted); font-size: 0.78rem; }
+      .track-mini strong,
+      .track-mini span {
+        display: block;
+      }
+
+      .track-mini span {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
 
       .pill {
         padding: 6px 9px;
         border-radius: 999px;
-        font-size: 0.72rem;
         background: rgba(126,249,211,0.12);
-        border: 1px solid rgba(126,249,211,0.22);
+        border: 1px solid rgba(126,249,211,0.26);
         color: var(--primary);
+        font-size: 0.7rem;
       }
 
-      .search-zone {
-        padding: 10px 0 18px;
+      .discover {
+        padding: 16px 0 18px;
       }
 
       .toolbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 18px;
+        gap: 16px;
         flex-wrap: wrap;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
       }
 
       .section-title {
-        font-size: clamp(1.8rem, 3vw, 2.8rem);
-        letter-spacing: -0.05em;
+        font-size: clamp(1.9rem, 3vw, 2.9rem);
+        letter-spacing: -0.06em;
         margin: 0;
       }
 
@@ -377,10 +392,10 @@
         align-items: center;
         gap: 12px;
         width: min(560px, 100%);
-        background: rgba(255,255,255,0.035);
-        border: 1px solid var(--border);
-        border-radius: 14px;
         padding: 12px 16px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.035);
+        border: 1px solid var(--line);
       }
 
       .search-box input {
@@ -402,7 +417,7 @@
       }
 
       .chip {
-        border: 1px solid var(--border);
+        border: 1px solid var(--line);
         background: rgba(255,255,255,0.025);
         color: var(--muted);
         padding: 9px 14px;
@@ -412,14 +427,14 @@
       }
 
       .chip.active {
-        background: linear-gradient(135deg, rgba(126,249,211,0.18), rgba(122,167,255,0.18));
-        border-color: rgba(126,249,211,0.26);
+        background: linear-gradient(135deg, rgba(126,249,211,0.15), rgba(122,167,255,0.14));
+        border-color: rgba(126,249,211,0.25);
         color: var(--text);
       }
 
       .content-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+        grid-template-columns: minmax(0, 1.42fr) minmax(300px, 0.58fr);
         gap: 22px;
       }
 
@@ -430,11 +445,10 @@
       }
 
       .track-card {
-        border: 1px solid var(--border);
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(18,27,41,0.62));
         border-radius: 20px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(18,27,41,0.65));
+        border: 1px solid var(--line);
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         transition: 0.25s ease;
       }
 
@@ -449,22 +463,23 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2.5rem;
+        font-size: 2.6rem;
         font-weight: 800;
-        color: rgba(255,255,255,0.18);
         letter-spacing: 0.08em;
+        color: rgba(255,255,255,0.18);
       }
 
       .card-cover::before {
         content: "";
         position: absolute;
         inset: 14px;
-        border: 1px solid rgba(255,255,255,0.17);
+        border: 1px solid rgba(255,255,255,0.16);
         border-radius: 16px;
-        opacity: 0.6;
       }
 
-      .card-body { padding: 14px 14px 16px; }
+      .card-body {
+        padding: 14px 14px 16px;
+      }
 
       .track-top {
         display: flex;
@@ -494,21 +509,21 @@
       }
 
       .card-actions {
+        margin-top: 14px;
         display: flex;
         align-items: center;
         gap: 10px;
-        margin-top: 14px;
       }
 
       .icon-btn {
         width: 38px; height: 38px;
         border-radius: 12px;
         background: rgba(255,255,255,0.03);
-        border: 1px solid var(--border);
+        border: 1px solid var(--line);
         color: var(--text);
-        cursor: pointer;
         display: grid;
         place-items: center;
+        cursor: pointer;
       }
 
       .icon-btn.favorite.active {
@@ -519,13 +534,13 @@
 
       .play-btn {
         flex: 1;
-        background: linear-gradient(135deg, rgba(126,249,211,0.18), rgba(122,167,255,0.18));
-        color: var(--text);
-        border: 1px solid rgba(126,249,211,0.25);
-        border-radius: 12px;
         padding: 10px 12px;
-        cursor: pointer;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(126,249,211,0.18), rgba(122,167,255,0.15));
+        border: 1px solid rgba(126,249,211,0.24);
+        color: var(--text);
         font-weight: 700;
+        cursor: pointer;
       }
 
       .sidebar {
@@ -535,15 +550,15 @@
       }
 
       .panel {
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(18,27,41,0.64));
         padding: 18px;
+        border-radius: 20px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(18,27,41,0.62));
+        border: 1px solid var(--line);
       }
 
       .panel h3 {
         margin: 0 0 14px;
-        font-size: 1.08rem;
+        font-size: 1.06rem;
       }
 
       .favorites-list, .listen-list {
@@ -557,9 +572,9 @@
         align-items: center;
         gap: 12px;
         padding: 10px 10px;
+        border-radius: 12px;
         border: 1px solid rgba(255,255,255,0.05);
         background: rgba(255,255,255,0.02);
-        border-radius: 12px;
       }
 
       .small-cover {
@@ -568,7 +583,7 @@
         display: grid;
         place-items: center;
         font-weight: 900;
-        color: #061e2d;
+        color: #071d2f;
       }
 
       .small-text {
@@ -598,10 +613,35 @@
       .mini-actions button {
         width: 30px; height: 30px;
         border-radius: 10px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--line);
         background: rgba(255,255,255,0.02);
         color: var(--text);
         cursor: pointer;
+      }
+
+      .bottom-banner {
+        margin-top: 22px;
+        padding: 28px 26px;
+        border-radius: 24px;
+        background:
+          linear-gradient(135deg, rgba(126,249,211,0.1), rgba(122,167,255,0.12), rgba(255,122,217,0.1));
+        border: 1px solid rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .bottom-banner h3 {
+        margin: 0 0 6px;
+        font-size: clamp(1.4rem, 2vw, 2.1rem);
+        letter-spacing: -0.05em;
+      }
+
+      .bottom-banner p {
+        margin: 0;
+        color: var(--muted);
       }
 
       .player-bar {
@@ -611,8 +651,8 @@
         transform: translateX(-50%);
         width: min(1180px, calc(100% - 24px));
         z-index: 50;
-        background: rgba(7, 12, 22, 0.7);
-        backdrop-filter: blur(18px);
+        background: rgba(7, 12, 22, 0.72);
+        backdrop-filter: blur(16px);
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 22px;
         box-shadow: var(--shadow);
@@ -638,16 +678,14 @@
         display: grid;
         place-items: center;
         font-weight: 900;
-        color: #061c2e;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        color: #061d2f;
       }
 
       .now-text {
         min-width: 0;
       }
 
-      .now-text strong,
-      .now-text span {
+      .now-text strong, .now-text span {
         display: block;
         white-space: nowrap;
         overflow: hidden;
@@ -656,7 +694,7 @@
 
       .now-text span {
         color: var(--muted);
-        font-size: 0.8rem;
+        font-size: 0.78rem;
       }
 
       .progress-wrap {
@@ -665,8 +703,8 @@
 
       .player-controls {
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         gap: 12px;
       }
 
@@ -674,11 +712,11 @@
         width: 42px; height: 42px;
         border-radius: 50%;
         background: rgba(255,255,255,0.02);
-        border: 1px solid var(--border);
+        border: 1px solid var(--line);
         color: var(--text);
-        cursor: pointer;
         display: grid;
         place-items: center;
+        cursor: pointer;
       }
 
       .circle-btn.play {
@@ -691,27 +729,25 @@
 
       .time-row {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        font-size: 0.76rem;
         color: var(--muted);
-        margin-top: 10px;
-        margin-bottom: 8px;
+        font-size: 0.76rem;
+        margin: 10px 0 8px;
       }
 
       .progress {
         width: 100%;
         height: 6px;
         border-radius: 999px;
-        background: rgba(255,255,255,0.07);
+        background: rgba(255,255,255,0.08);
         overflow: hidden;
       }
 
       .progress-bar {
         width: 0%;
         height: 100%;
-        background: linear-gradient(90deg, var(--primary), var(--cyan), var(--pink));
         border-radius: inherit;
+        background: linear-gradient(90deg, var(--primary), var(--cyan), var(--pink));
       }
 
       .volume-box {
@@ -729,7 +765,7 @@
       .modal {
         position: fixed;
         inset: 0;
-        background: rgba(4, 8, 16, 0.72);
+        background: rgba(5, 10, 17, 0.72);
         display: grid;
         place-items: center;
         z-index: 100;
@@ -740,7 +776,7 @@
 
       .modal-card {
         width: min(470px, calc(100% - 28px));
-        background: rgba(12,21,35,0.96);
+        background: rgba(12, 21, 35, 0.96);
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 26px;
         box-shadow: var(--shadow);
@@ -749,14 +785,14 @@
 
       .modal-head {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         padding: 18px 20px 10px;
       }
 
       .modal-head h3 {
         margin: 0;
-        font-size: 1.45rem;
+        font-size: 1.42rem;
         letter-spacing: -0.05em;
       }
 
@@ -797,9 +833,9 @@
       .form-group { margin-bottom: 14px; }
       .form-group label {
         display: block;
-        font-size: 0.8rem;
-        color: var(--muted);
         margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 0.8rem;
       }
 
       .form-group input {
@@ -807,8 +843,8 @@
         background: rgba(255,255,255,0.03);
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 12px;
-        padding: 12px 14px;
         color: var(--text);
+        padding: 12px 14px;
         outline: none;
       }
 
@@ -820,10 +856,7 @@
         z-index: 200;
         display: grid;
         place-items: center;
-        background:
-          radial-gradient(circle at 20% 20%, rgba(126,249,211,0.18), transparent 20%),
-          radial-gradient(circle at 80% 20%, rgba(122,167,255,0.18), transparent 28%),
-          linear-gradient(135deg, rgba(8, 12, 22, 0.98), rgba(10, 18, 31, 0.96));
+        background: linear-gradient(135deg, rgba(7,12,22,0.96), rgba(15,23,36,0.96));
         transition: opacity 1s ease, visibility 1s ease;
       }
 
@@ -834,24 +867,23 @@
 
       .intro-box {
         position: relative;
-        width: min(520px, 82vw);
-        padding: 28px 26px 22px;
+        width: min(540px, 82vw);
         text-align: center;
+        padding: 24px 12px 18px;
       }
 
       .intro-box::before,
       .intro-box::after {
         content: "";
         position: absolute;
-        inset: auto;
         border-radius: 50%;
-        filter: blur(40px);
+        filter: blur(50px);
       }
 
       .intro-box::before {
         width: 180px; height: 180px;
-        left: 10%; top: 10%;
-        background: rgba(126,249,211,0.1);
+        left: 8%; top: 5%;
+        background: rgba(126,249,211,0.12);
       }
 
       .intro-box::after {
@@ -861,7 +893,7 @@
       }
 
       .intro-logo {
-        width: 92px; height: 92px;
+        width: 94px; height: 94px;
         border-radius: 26px;
         margin: 0 auto 18px;
         display: grid;
@@ -870,32 +902,31 @@
         font-weight: 900;
         color: #071d2f;
         background: linear-gradient(135deg, var(--primary), var(--cyan));
-        box-shadow: 0 18px 40px rgba(126,249,211,0.2);
-        animation: pulse 2.2s ease-in-out infinite alternate;
+        box-shadow: 0 18px 42px rgba(126,249,211,0.2);
+        animation: pulse 2.1s ease-in-out infinite alternate;
       }
 
       @keyframes pulse {
         0% { transform: scale(1); box-shadow: 0 0 0 rgba(126,249,211,0); }
-        100% { transform: scale(1.08); box-shadow: 0 0 24px rgba(126,249,211,0.5); }
+        100% { transform: scale(1.08); box-shadow: 0 0 32px rgba(126,249,211,0.45); }
       }
 
       .intro-box h2 {
         margin: 0 0 12px;
-        font-size: clamp(2.4rem, 6vw, 4rem);
+        font-size: clamp(2.4rem, 5vw, 4rem);
         letter-spacing: -0.07em;
       }
 
       .intro-box p {
-        margin: 0 0 18px;
         color: var(--muted);
-        font-size: 1rem;
+        margin: 0 0 18px;
       }
 
       .progress-shell {
         width: 100%;
         height: 8px;
-        background: rgba(255,255,255,0.08);
         border-radius: 999px;
+        background: rgba(255,255,255,0.08);
         overflow: hidden;
       }
 
@@ -904,14 +935,14 @@
         height: 100%;
         background: linear-gradient(90deg, var(--primary), var(--cyan), var(--pink));
         border-radius: inherit;
-        transition: width 0.16s ease;
+        transition: width 0.17s ease;
       }
 
       .toast {
         position: fixed;
         right: 22px;
-        bottom: 112px;
-        background: rgba(13, 19, 30, 0.88);
+        bottom: 116px;
+        background: rgba(10, 18, 28, 0.9);
         color: var(--text);
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 12px;
@@ -936,23 +967,13 @@
         .music-sheet {
           grid-template-columns: 1fr;
         }
-
-        .player-bar {
-          bottom: 14px;
-          padding: 10px 12px;
-        }
-
-        .volume-box {
-          justify-content: flex-start;
-        }
       }
 
       @media (max-width: 620px) {
         .nav-links { display: none; }
-        .hero { padding-top: 52px; }
-        .showcase { min-height: 440px; }
-        .screen { width: 92%; }
-        .track-card { min-width: 0; }
+        .hero { padding-top: 54px; }
+        .showcase { height: 470px; }
+        .dashboard { width: 92%; }
       }
     </style>
   </head>
@@ -961,7 +982,7 @@
       <div class="intro-box">
         <div class="intro-logo">C</div>
         <h2>CoreMusic</h2>
-        <p>Where the night turns into a soundtrack.</p>
+        <p>Inside the pulse. Beyond the silence.</p>
         <div class="progress-shell"><div class="bar" id="introBar"></div></div>
       </div>
     </div>
@@ -994,7 +1015,7 @@
             <div class="eyebrow">Live • Curated • Neon</div>
             <h1>Feel the beat. Own the night.</h1>
             <p class="lead">
-              Discover soundtracks for every mood, from late-night drives to sunrise rituals. CoreMusic blends mood-based discovery, personalized playlists, and atmospheric visuals into one immersive music experience.
+              Experience music as atmosphere. Explore immersive sounds, craft your own mood-based playlists, and connect with a world of sonic stories built for late-night energy and sunrise resets.
             </p>
 
             <div class="hero-actions">
@@ -1005,11 +1026,11 @@
             <div class="stats">
               <div class="stat">
                 <strong>10k+</strong>
-                <span>immersive tracks</span>
+                <span>curated tracks</span>
               </div>
               <div class="stat">
                 <strong>150+</strong>
-                <span>sound curators</span>
+                <span>mood curators</span>
               </div>
               <div class="stat">
                 <strong>4.9</strong>
@@ -1019,12 +1040,12 @@
           </div>
 
           <div class="showcase">
-            <div class="orbit-ring"></div>
-            <div class="orb"></div>
+            <div class="orbital-ring"></div>
+            <div class="glow-orb"></div>
 
-            <div class="screen">
-              <div class="screen-header">
-                <div class="dots">
+            <div class="dashboard">
+              <div class="dash-head">
+                <div class="dot-group">
                   <span class="dot"></span>
                   <span class="dot"></span>
                   <span class="dot"></span>
@@ -1032,9 +1053,9 @@
                 <span style="color: var(--muted); font-size: 0.8rem;">CoreMusic</span>
               </div>
 
-              <div class="screen-body">
-                <div class="album-visual"></div>
-                <div class="track-panel">
+              <div class="dash-body">
+                <div class="album-art"></div>
+                <div class="track-stack">
                   <div class="track-row">
                     <div class="track-left">
                       <div class="mini-badge">N</div>
@@ -1063,13 +1084,13 @@
         </div>
       </section>
 
-      <section class="search-zone" id="discover">
+      <section class="discover" id="discover">
         <div class="container">
           <div class="toolbar">
             <h2 class="section-title">Discover</h2>
             <div class="search-box">
               <span>🔎</span>
-              <input type="text" id="searchInput" placeholder="Search artists, tracks, genre..." />
+              <input type="text" id="searchInput" placeholder="Search artists, tracks, genres..." />
             </div>
           </div>
 
@@ -1095,7 +1116,7 @@
                 <h3>Recently played</h3>
                 <div class="listen-list">
                   <div class="small-track">
-                    <div class="small-cover" style="background: linear-gradient(135deg, #7ef9d3, #7aa7ff); color:#061f2e;">N</div>
+                    <div class="small-cover" style="background: linear-gradient(135deg, #7ef9d3, #7aa7ff);">N</div>
                     <div class="small-text">
                       <strong>Neon Nights</strong>
                       <span>Nova Lane</span>
@@ -1104,7 +1125,7 @@
                   </div>
 
                   <div class="small-track">
-                    <div class="small-cover" style="background: linear-gradient(135deg, #ff7ad9, #8f7cff); color:#1c1228;">S</div>
+                    <div class="small-cover" style="background: linear-gradient(135deg, #ff7ad9, #8b7cff);">S</div>
                     <div class="small-text">
                       <strong>Silver Rain</strong>
                       <span>Starlite</span>
@@ -1113,7 +1134,7 @@
                   </div>
 
                   <div class="small-track">
-                    <div class="small-cover" style="background: linear-gradient(135deg, #67d9ff, #52f2a5); color:#061d2a;">M</div>
+                    <div class="small-cover" style="background: linear-gradient(135deg, #67d9ff, #57f2a2);">M</div>
                     <div class="small-text">
                       <strong>Moonlit Drive</strong>
                       <span>Melody V</span>
@@ -1127,7 +1148,7 @@
                 <h3>Audio mood</h3>
                 <div class="listen-list">
                   <div class="small-track">
-                    <div class="small-cover" style="background: linear-gradient(135deg, #ffd166, #ff7ad9); color:#1a1a0d;">D</div>
+                    <div class="small-cover" style="background: linear-gradient(135deg, #ffd166, #ff7ad9);">D</div>
                     <div class="small-text">
                       <strong>Dream state</strong>
                       <span>Warm synthwave</span>
@@ -1135,7 +1156,7 @@
                   </div>
 
                   <div class="small-track">
-                    <div class="small-cover" style="background: linear-gradient(135deg, #7aa7ff, #67d9ff); color:#071a2d;">R</div>
+                    <div class="small-cover" style="background: linear-gradient(135deg, #7aa7ff, #67d9ff);">R</div>
                     <div class="small-text">
                       <strong>Reset mode</strong>
                       <span>Clean & calm</span>
@@ -1144,6 +1165,14 @@
                 </div>
               </div>
             </aside>
+          </div>
+
+          <div class="bottom-banner">
+            <div>
+              <h3>Build your own soundtrack.</h3>
+              <p>Mix, save, and replay your favorite soundscapes anytime.</p>
+            </div>
+            <button class="btn btn-primary">Explore playlists</button>
           </div>
         </div>
       </section>
@@ -1170,6 +1199,7 @@
             <span id="currentTime">0:00</span>
             <span id="totalTime">0:00</span>
           </div>
+
           <div class="progress">
             <div class="progress-bar" id="progressBar"></div>
           </div>
@@ -1213,7 +1243,7 @@
               <input id="passwordInput" type="password" placeholder="Enter password" />
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width:100%; margin-top: 8px;" id="authSubmit">Log in</button>
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:8px;" id="authSubmit">Log in</button>
           </form>
         </div>
       </div>
@@ -1224,10 +1254,10 @@
     <script>
       const tracks = [
         { id: 1, title: "Midnight Echo", artist: "Nova Lane", genre: "electronic", duration: "3:24", cover: "linear-gradient(135deg,#ff7ad9,#7ef9d3)", src: "assets/audio/track1.mp3" },
-        { id: 2, title: "Velvet Sky", artist: "Aurora Bloom", genre: "pop", duration: "2:47", cover: "linear-gradient(135deg,#7aa7ff,#8f7cff)", src: "assets/audio/track2.mp3" },
+        { id: 2, title: "Velvet Sky", artist: "Aurora Bloom", genre: "pop", duration: "2:47", cover: "linear-gradient(135deg,#7aa7ff,#8b7cff)", src: "assets/audio/track2.mp3" },
         { id: 3, title: "Night Café", artist: "Luna Reign", genre: "jazz", duration: "4:12", cover: "linear-gradient(135deg,#ffd166,#ff9f43)", src: "assets/audio/track3.mp3" },
-        { id: 4, title: "Golden Waves", artist: "Solar Drift", genre: "lofi", duration: "3:08", cover: "linear-gradient(135deg,#52f2a5,#67d9ff)", src: "assets/audio/track4.mp3" },
-        { id: 5, title: "Rain on Glass", artist: "Kairo", genre: "lofi", duration: "3:36", cover: "linear-gradient(135deg,#7f7fd5,#86a8e7)", src: "assets/audio/track5.mp3" },
+        { id: 4, title: "Golden Waves", artist: "Solar Drift", genre: "lofi", duration: "3:08", cover: "linear-gradient(135deg,#57f2a2,#67d9ff)", src: "assets/audio/track4.mp3" },
+        { id: 5, title: "Rain on Glass", artist: "Kairo", genre: "lofi", duration: "3:36", cover: "linear-gradient(135deg,#7a7ae6,#86a8e7)", src: "assets/audio/track5.mp3" },
         { id: 6, title: "Pulse Runner", artist: "Neon City", genre: "electronic", duration: "3:51", cover: "linear-gradient(135deg,#16a085,#5eead5)", src: "assets/audio/track6.mp3" },
         { id: 7, title: "Silver Rain", artist: "Starlite", genre: "hiphop", duration: "2:58", cover: "linear-gradient(135deg,#ff7ad9,#7c3aed)", src: "assets/audio/track7.mp3" },
         { id: 8, title: "Blue Echoes", artist: "Miro", genre: "pop", duration: "3:19", cover: "linear-gradient(135deg,#38bdf8,#60a5fa)", src: "assets/audio/track8.mp3" },
@@ -1245,13 +1275,13 @@
 
       const trackList = document.getElementById("trackList");
       const favoritesList = document.getElementById("favoritesList");
-      const filterRow = document.getElementById("filterRow");
       const searchInput = document.getElementById("searchInput");
+      const filterRow = document.getElementById("filterRow");
+      const audioPlayer = document.getElementById("audioPlayer");
       const playBtn = document.getElementById("playBtn");
       const prevBtn = document.getElementById("prevBtn");
       const nextBtn = document.getElementById("nextBtn");
       const volumeSlider = document.getElementById("volumeSlider");
-      const audioPlayer = document.getElementById("audioPlayer");
       const progressBar = document.getElementById("progressBar");
       const currentTimeEl = document.getElementById("currentTime");
       const totalTimeEl = document.getElementById("totalTime");
@@ -1261,10 +1291,10 @@
       const authModal = document.getElementById("authModal");
       const authTitle = document.getElementById("authTitle");
       const authForm = document.getElementById("authForm");
-      const nameGroup = document.getElementById("nameGroup");
       const toast = document.getElementById("toast");
       const intro = document.getElementById("intro");
       const introBar = document.getElementById("introBar");
+      const nameGroup = document.getElementById("nameGroup");
 
       function getVisibleTracks() {
         const q = state.search.toLowerCase();
@@ -1295,12 +1325,11 @@
 
       function renderTracks() {
         const visible = getVisibleTracks();
-
         trackList.innerHTML = visible.map(track => {
           const isFav = state.favorites.includes(track.id);
           return `
             <article class="track-card">
-              <div class="card-cover" style="background:${track.cover};">${track.title.slice(0, 1)}</div>
+              <div class="card-cover" style="background:${track.cover};">${track.title.slice(0,1)}</div>
               <div class="card-body">
                 <div class="track-top">
                   <h3>${track.title}</h3>
@@ -1342,9 +1371,7 @@
               <strong>${track.title}</strong>
               <span>${track.artist}</span>
             </div>
-            <div class="mini-actions">
-              <button data-action="play" data-id="${track.id}">▶</button>
-            </div>
+            <div class="mini-actions"><button data-action="play" data-id="${track.id}">▶</button></div>
           </div>
         `).join("");
       }
@@ -1353,16 +1380,14 @@
         if (!track) return;
         nowTrackEl.textContent = track.title;
         nowArtistEl.textContent = track.artist;
-        nowCoverEl.textContent = track.title.slice(0, 1);
+        nowCoverEl.textContent = track.title.slice(0,1);
         nowCoverEl.style.background = track.cover;
-        nowCoverEl.style.color = "#061f2e";
+        nowCoverEl.style.color = "#071d2f";
       }
 
       function playTrack(id) {
         const track = tracks.find(item => item.id === id) || tracks[0];
-        const index = tracks.findIndex(item => item.id === track.id);
-        state.currentIndex = index;
-
+        state.currentIndex = tracks.findIndex(item => item.id === track.id);
         audioPlayer.src = track.src;
         audioPlayer.load();
         audioPlayer.volume = Number(volumeSlider.value);
@@ -1431,9 +1456,9 @@
         const fav = e.target.closest(".favorite");
         if (fav) {
           const id = Number(fav.dataset.id);
-          const index = state.favorites.indexOf(id);
-          if (index >= 0) {
-            state.favorites.splice(index, 1);
+          const idx = state.favorites.indexOf(id);
+          if (idx >= 0) {
+            state.favorites.splice(idx, 1);
             showToast("Removed from favorites");
           } else {
             state.favorites.push(id);
@@ -1460,9 +1485,7 @@
 
       favoritesList.addEventListener("click", (e) => {
         const btn = e.target.closest("[data-action='play']");
-        if (btn) {
-          playTrack(Number(btn.dataset.id));
-        }
+        if (btn) playTrack(Number(btn.dataset.id));
       });
 
       playBtn.addEventListener("click", togglePlay);
@@ -1486,12 +1509,12 @@
         tab.addEventListener("click", () => openAuth(tab.dataset.mode));
       });
 
-      authForm.addEventListener("submit", e => {
+      authForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const mode = document.querySelector(".tab.active").dataset.mode;
+        const name = document.getElementById("nameInput").value.trim();
         const email = document.getElementById("emailInput").value.trim();
         const password = document.getElementById("passwordInput").value.trim();
-        const name = document.getElementById("nameInput").value.trim();
 
         if (!email || !password || (mode === "signup" && !name)) {
           showToast("Please fill required fields");
