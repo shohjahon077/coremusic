@@ -22,7 +22,7 @@
         --gold: #ffd166;
         --violet: #8b7cff;
         --green: #5ce1a6;
-        --shadow: 0 28px 80px rgba(0,0,0,0.5);
+        --shadow: 0 28px 80px rgba(0, 0, 0, 0.5);
       }
 
       * { box-sizing: border-box; }
@@ -299,6 +299,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
+        flex-wrap: wrap;
         margin-top: 22px;
       }
 
@@ -937,18 +938,58 @@
 
       @media (max-width: 1100px) {
         .app-shell { grid-template-columns: 1fr; }
-        .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
+        .sidebar {
+          position: static;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+        }
         .hero-strip { grid-template-columns: 1fr; }
         .dashboard-grid { grid-template-columns: 1fr; }
         .music-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
 
       @media (max-width: 720px) {
-        .nav-links { display: none; }
+        .topbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .search-box {
+          width: 100%;
+        }
+
+        .top-actions {
+          justify-content: space-between;
+        }
+
         .main { padding-left: 12px; padding-right: 12px; }
         .music-grid { grid-template-columns: 1fr; }
+        .bottom-player {
+          left: 12px;
+          right: 12px;
+          width: auto;
+          transform: none;
+          bottom: 12px;
+        }
         .player-inner { grid-template-columns: 1fr; }
-        .bottom-player { bottom: 10px; }
+        .volume-box { justify-content: flex-start; }
+        .volume-slider { width: 100%; }
+      }
+
+      @media (max-width: 460px) {
+        .app-shell { min-height: auto; }
+        .sidebar { padding: 14px 12px 12px; }
+        .brand { padding-left: 6px; }
+        .menu-item \n { padding: 10px 10px; }
+        .spotlight { padding: 18px 16px; }
+        .spotlight h2 { font-size: 2rem; }
+        .top-actions { gap: 8px; }
+        .btn { width: 100%; }
+        .spotlight-actions { flex-direction: column; align-items: stretch; }
+        .bottom-player { padding: 10px 12px; }
+        .now-playing { justify-content: center; }
+        .player-controls { justify-content: center; }
       }
     </style>
   </head>
@@ -972,20 +1013,20 @@
         <div class="nav-section">
           <div class="nav-label">Menu</div>
           <div class="menu">
-            <div class="menu-item active"><span class="menu-icon">🏠</span> Home</div>
-            <div class="menu-item"><span class="menu-icon">🎧</span> Discover</div>
-            <div class="menu-item"><span class="menu-icon">📚</span> Library</div>
-            <div class="menu-item"><span class="menu-icon">♥</span> Favorites</div>
-            <div class="menu-item"><span class="menu-icon">🎵</span> Playlists</div>
+            <div class="menu-item active" data-section="home"><span class="menu-icon">🏠</span> Home</div>
+            <div class="menu-item" data-section="discover"><span class="menu-icon">🎧</span> Discover</div>
+            <div class="menu-item" data-section="library"><span class="menu-icon">📚</span> Library</div>
+            <div class="menu-item" data-section="favorites"><span class="menu-icon">♥</span> Favorites</div>
+            <div class="menu-item" data-section="playlists"><span class="menu-icon">🎵</span> Playlists</div>
           </div>
         </div>
 
         <div class="nav-section">
           <div class="nav-label">Your mix</div>
           <div class="menu">
-            <div class="menu-item"><span class="menu-icon">✨</span> Chill</div>
-            <div class="menu-item"><span class="menu-icon">🌙</span> Night Drive</div>
-            <div class="menu-item"><span class="menu-icon">⚡</span> Focus</div>
+            <div class="menu-item" data-section="chill"><span class="menu-icon">✨</span> Chill</div>
+            <div class="menu-item" data-section="night-drive"><span class="menu-icon">🌙</span> Night Drive</div>
+            <div class="menu-item" data-section="focus"><span class="menu-icon">⚡</span> Focus</div>
           </div>
         </div>
 
@@ -1125,9 +1166,9 @@
 
         <div>
           <div class="player-controls">
-            <button class="circle-btn" id="prevBtn">⏮</button>
-            <button class="circle-btn play" id="playBtn">▶</button>
-            <button class="circle-btn" id="nextBtn">⏭</button>
+            <button class="circle-btn" id="prevBtn" type="button">⏮</button>
+            <button class="circle-btn play" id="playBtn" type="button">▶</button>
+            <button class="circle-btn" id="nextBtn" type="button">⏭</button>
           </div>
 
           <div class="time-row">
@@ -1150,7 +1191,7 @@
       <div class="modal-card">
         <div class="modal-head">
           <h3 id="authTitle">Join CoreMusic</h3>
-          <button class="close-btn" id="closeModal">×</button>
+          <button class="close-btn" id="closeModal" type="button">×</button>
         </div>
 
         <div class="modal-tabs">
@@ -1198,7 +1239,6 @@
       ];
 
       const state = {
-        filter: "all",
         search: "",
         currentIndex: 0,
         favorites: JSON.parse(localStorage.getItem("coremusic-favorites") || "[]"),
@@ -1226,15 +1266,6 @@
       const introBar = document.getElementById("introBar");
       const nameGroup = document.getElementById("nameGroup");
 
-      function getVisibleTracks() {
-        const q = state.search.toLowerCase();
-        return tracks.filter(track => {
-          const match = state.filter === "all" || track.genre === state.filter;
-          const searchMatch = !q || track.title.toLowerCase().includes(q) || track.artist.toLowerCase().includes(q) || track.genre.toLowerCase().includes(q);
-          return match && searchMatch;
-        });
-      }
-
       function formatTime(seconds) {
         if (!Number.isFinite(seconds)) return "0:00";
         const mins = Math.floor(seconds / 60);
@@ -1253,6 +1284,14 @@
         showToast.timer = setTimeout(() => toast.classList.remove("show"), 1500);
       }
 
+      function getVisibleTracks() {
+        const q = state.search.toLowerCase();
+        return tracks.filter(track => {
+          const searchMatch = !q || track.title.toLowerCase().includes(q) || track.artist.toLowerCase().includes(q) || track.genre.toLowerCase().includes(q);
+          return searchMatch;
+        });
+      }
+
       function renderTracks() {
         const visible = getVisibleTracks();
         trackList.innerHTML = visible.map(track => {
@@ -1263,7 +1302,7 @@
               <div class="body">
                 <div class="track-top">
                   <h4>${track.title}</h4>
-                  <button class="icon-btn favorite ${isFav ? "active" : ""}" data-id="${track.id}" aria-label="favorite">${isFav ? "♥" : "♡"}</button>
+                  <button class="icon-btn favorite ${isFav ? "active" : ""}" data-id="${track.id}" type="button" aria-label="favorite">${isFav ? "♥" : "♡"}</button>
                 </div>
                 <div class="artist">${track.artist}</div>
                 <div class="meta-row">
@@ -1271,8 +1310,8 @@
                   <span>${track.duration}</span>
                 </div>
                 <div class="card-actions">
-                  <button class="icon-btn" data-action="queue" data-id="${track.id}">＋</button>
-                  <button class="play-btn" data-action="play" data-id="${track.id}">Play</button>
+                  <button class="icon-btn" data-action="queue" data-id="${track.id}" type="button">＋</button>
+                  <button class="play-btn" data-action="play" data-id="${track.id}" type="button">Play</button>
                 </div>
               </div>
             </article>
@@ -1292,13 +1331,21 @@
       function playTrack(id) {
         const track = tracks.find(item => item.id === id) || tracks[0];
         state.currentIndex = tracks.findIndex(item => item.id === track.id);
-        audioPlayer.src = track.src;
+        const mediaPath = track.src;
+        audioPlayer.src = mediaPath;
         audioPlayer.load();
         audioPlayer.volume = Number(volumeSlider.value);
         setCurrentDisplay(track);
-        audioPlayer.play();
-        state.playing = true;
+
+        const playPromise = audioPlayer.play();
+        if (playPromise && typeof playPromise.then === "function") {
+          playPromise.catch(() => {
+            showToast("Media blocked — tap play again");
+          });
+        }
+
         playBtn.textContent = "❚❚";
+        state.playing = true;
       }
 
       function togglePlay() {
@@ -1308,7 +1355,12 @@
         }
 
         if (audioPlayer.paused) {
-          audioPlayer.play();
+          const playPromise = audioPlayer.play();
+          if (playPromise && typeof playPromise.then === "function") {
+            playPromise.catch(() => {
+              showToast("Media blocked — tap play again");
+            });
+          }
           state.playing = true;
           playBtn.textContent = "❚❚";
         } else {
@@ -1343,15 +1395,15 @@
         nameGroup.classList.toggle("hidden", mode !== "signup");
       }
 
-      searchInput.addEventListener("input", (e) => {
-        state.search = e.target.value.trim();
+      searchInput.addEventListener("input", (event) => {
+        state.search = event.target.value.trim();
         renderTracks();
       });
 
-      trackList.addEventListener("click", (e) => {
-        const fav = e.target.closest(".favorite");
-        if (fav) {
-          const id = Number(fav.dataset.id);
+      trackList.addEventListener("click", (event) => {
+        const favBtn = event.target.closest(".favorite");
+        if (favBtn) {
+          const id = Number(favBtn.dataset.id);
           const idx = state.favorites.indexOf(id);
           if (idx >= 0) {
             state.favorites.splice(idx, 1);
@@ -1365,24 +1417,32 @@
           return;
         }
 
-        const playAction = e.target.closest("[data-action='play']");
+        const playAction = event.target.closest("[data-action='play']");
         if (playAction) {
           playTrack(Number(playAction.dataset.id));
           return;
         }
 
-        const queueAction = e.target.closest("[data-action='queue']");
+        const queueAction = event.target.closest("[data-action='queue']");
         if (queueAction) {
           const track = tracks.find(item => item.id === Number(queueAction.dataset.id));
           showToast(`Queued: ${track.title}`);
         }
       });
 
+      document.querySelectorAll(".menu-item").forEach(item => {
+        item.addEventListener("click", () => {
+          document.querySelectorAll(".menu-item").forEach(el => el.classList.remove("active"));
+          item.classList.add("active");
+          showToast(item.textContent.trim());
+        });
+      });
+
       playBtn.addEventListener("click", togglePlay);
       prevBtn.addEventListener("click", prevTrack);
       nextBtn.addEventListener("click", nextTrack);
-      volumeSlider.addEventListener("input", (e) => {
-        audioPlayer.volume = Number(e.target.value);
+      volumeSlider.addEventListener("input", (event) => {
+        audioPlayer.volume = Number(event.target.value);
       });
       audioPlayer.addEventListener("timeupdate", updateProgress);
       audioPlayer.addEventListener("loadedmetadata", updateProgress);
@@ -1398,8 +1458,8 @@
         tab.addEventListener("click", () => openAuth(tab.dataset.mode));
       });
 
-      authForm.addEventListener("submit", e => {
-        e.preventDefault();
+      authForm.addEventListener("submit", event => {
+        event.preventDefault();
         const mode = document.querySelector(".tab.active").dataset.mode;
         const name = document.getElementById("nameInput").value.trim();
         const email = document.getElementById("emailInput").value.trim();
