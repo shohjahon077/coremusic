@@ -1,15 +1,15 @@
 {
   "name": "coremusic-platform",
   "version": "1.0.0",
-  "description": "Professional music streaming platform",
+  "description": "CoreMusic fullstack website with admin dashboard and database-ready backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2",
     "cors": "^2.8.5",
-    "body-parser": "^1.20.2"
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
   }
 }

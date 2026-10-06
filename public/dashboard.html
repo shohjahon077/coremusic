@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CoreMusic Admin</title>
+    <style>
+      :root {
+        --bg: #07111f; --bg-2: #0d1b2a; --primary: #55e6c1; --primary-2: #66a6ff; --text: #ecf7ff; --muted: #aac4d6; --line: rgba(255,255,255,0.08);
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Inter, sans-serif; background: linear-gradient(135deg, var(--bg), var(--bg-2)); color: var(--text); }
+      .container { max-width: 1200px; margin: 0 auto; padding: 24px 18px; }
+      .topbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 16px; }
+      .logo { font-weight: 900; }
+      .nav { display: flex; gap: 18px; color: var(--muted); }
+      .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
+      .stat-card { background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+      .stat-card h3 { margin: 0 0 10px; color: var(--muted); font-size: 0.9rem; }
+      .stat-card strong { font-size: 2rem; }
+      .main-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 22px; margin-top: 24px; }
+      .panel { background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+      form { display: grid; gap: 12px; }
+      input, select { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--line); color: var(--text); border-radius: 10px; padding: 12px 14px; }
+      button { border: none; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #061a2d; padding: 12px 18px; font-weight: 800; cursor: pointer; }
+      table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+      th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+      .muted { color: var(--muted); }
+      @media (max-width: 768px) { .stats, .main-grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="topbar">
+        <div class="logo">CoreMusic Admin</div>
+        <div class="nav">
+          <a href="/">Home</a>
+          <a href="/dashboard">Dashboard</a>
+          <a href="/admin">Admin</a>
+        </div>
+      </div>
+
+      <div class="stats" id="statsGrid"></div>
+
+      <div class="main-grid">
+        <div class="panel">
+          <h3>Add track</h3>
+          <form id="trackForm">
+            <input type="text" name="title" placeholder="Track title" required />
+            <input type="text" name="artist" placeholder="Artist" required />
+            <input type="text" name="album" placeholder="Album" required />
+            <input type="text" name="genre" placeholder="Genre" required />
+            <input type="text" name="mood" placeholder="Mood" required />
+            <input type="text" name="duration" placeholder="Duration e.g. 3:15" required />
+            <input type="text" name="cover" placeholder="Emoji cover" value="🎵" required />
+            <input type="text" name="color" placeholder="CSS gradient" value="linear-gradient(135deg,#55e6c1,#66a6ff)" required />
+            <input type="text" name="audio" placeholder="Audio path" value="/audio/demo-track.mp3" required />
+            <button type="submit">Add track</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h3>Users</h3>
+          <div id="usersList" class="muted">Loading...</div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top: 24px;">
+        <h3>Tracks list</h3>
+        <table>
+          <thead>
+            <tr><th>Title</th><th>Artist</th><th>Genre</th><th>Plays</th></tr>
+          </thead>
+          <tbody id="trackRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      const token = localStorage.getItem('coremusic_token');
+      if (!token) {
+        window.location.href = '/';
+      }
+
+      async function api(path, method='GET', body) {
+        const res = await fetch('/api' + path, {
+          method,
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: body ? JSON.stringify(body) : undefined
+        });
+        return res.json();
+      }
+
+      async function loadStats() {
+        const data = await api('/admin/stats');
+        const stats = data.stats || {};
+        document.getElementById('statsGrid').innerHTML = `
+          <div class="stat-card"><h3>Users</h3><strong>${stats.users || 0}</strong></div>
+          <div class="stat-card"><h3>Tracks</h3><strong>${stats.tracks || 0}</strong></div>
+          <div class="stat-card"><h3>Playlists</h3><strong>${stats.playlists || 0}</strong></div>
+          <div class="stat-card"><h3>Total plays</h3><strong>${stats.totalPlays || 0}</strong></div>
+        `;
+      }
+
+      async function loadUsers() {
+        const data = await api('/admin/users');
+        const users = data.users || [];
+        document.getElementById('usersList').innerHTML = users.map(u => `<div>${u.name} • ${u.email}</div>`).join('') || 'No users';
+      }
+
+      async function loadTracks() {
+        const data = await api('/admin/tracks');
+        const rows = data.tracks || [];
+        document.getElementById('trackRows').innerHTML = rows.map(track => `
+          <tr>
+            <td>${track.title}</td>
+            <td>${track.artist}</td>
+            <td>${track.genre}</td>
+            <td>${track.plays}</td>
+          </tr>
+        `).join('');
+      }
+
+      document.getElementById('trackForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = new FormData(e.target);
+        const payload = Object.fromEntries(form.entries());
+        const data = await api('/admin/tracks', 'POST', payload);
+        if (data.ok) {
+          e.target.reset();
+          await loadStats();
+          await loadTracks();
+        }
+      });
+
+      loadStats();
+      loadUsers();
+      loadTracks();
+    </script>
+  </body>
+</html>
