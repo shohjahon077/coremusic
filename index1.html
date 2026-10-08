@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="uz" class="h-full dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Liquid Glass Music - Morgenshtern Collection</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.05)',
+                            200: 'rgba(255, 255, 255, 0.1)',
+                            300: 'rgba(255, 255, 255, 0.2)',
+                            border: 'rgba(255, 255, 255, 0.15)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #06070b;
+            color: #f3f4f6;
+            overflow: hidden;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .glass-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Liquid Animated Mesh Background */
+        .liquid-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .liquid-blob {
+            position: absolute;
+            filter: blur(100px);
+            opacity: 0.6;
+            border-radius: 50%;
+            animation: liquidMove 22s infinite alternate ease-in-out;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, #8b5cf6 0%, #d946ef 100%);
+        }
+
+        .blob-2 {
+            bottom: -15%;
+            right: -10%;
+            width: 55vw;
+            height: 55vw;
+            background: radial-gradient(circle, #3b82f6 0%, #06b6d4 100%);
+            animation-delay: -7s;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            width: 45vw;
+            height: 45vw;
+            background: radial-gradient(circle, #ec4899 0%, #a855f7 100%);
+            animation-delay: -14s;
+        }
+
+        @keyframes liquidMove {
+            0% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+            50% { transform: translate(60px, -80px) scale(1.15) rotate(180deg); }
+            100% { transform: translate(-40px, 50px) scale(0.9) rotate(360deg); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Custom Range Input */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            height: 5px;
+            cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
+            transition: all 0.15s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+            background: #c084fc;
+        }
+
+        /* Equalizer Animation Bars */
+        .eq-bar {
+            width: 3px;
+            background: linear-gradient(to top, #ec4899, #a855f7);
+            border-radius: 3px;
+            animation: eqPulse 0.7s infinite alternate ease-in-out;
+        }
+        .paused .eq-bar {
+            animation-play-state: paused !important;
+            height: 4px !important;
+        }
+        @keyframes eqPulse {
+            0% { height: 4px; }
+            100% { height: 22px; }
+        }
+
+        #fullPlayerModal {
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col justify-between relative selection:bg-purple-500 selection:text-white">
+
+    <!-- HIDDEN CONTAINER FOR ALL STATIC AUDIO TAGS -->
+    <div id="audioContainer" class="hidden">
+        <audio id="audio-1" src="Morgenshtern &  AK 47 - Кадиллак Без Номеров.mp3" preload="metadata"></audio>
+        <audio id="audio-2" src="Morgenshtern - B.mp3" preload="metadata"></audio>
+        <audio id="audio-3" src="Morgenshtern - Balance.mp3" preload="metadata"></audio>
+        <audio id="audio-4" src="Morgenshtern - Cctv.mp3" preload="metadata"></audio>
+        <audio id="audio-5" src="Morgenshtern - Cristal & МОЁТ.mp3" preload="metadata"></audio>
+        <audio id="audio-6" src="Morgenshtern - Eeee.mp3" preload="metadata"></audio>
+        <audio id="audio-7" src="Morgenshtern - Guf Diss.mp3" preload="metadata"></audio>
+        <audio id="audio-8" src="Morgenshtern - ICE.mp3" preload="metadata"></audio>
+        <audio id="audio-9" src="Morgenshtern - Katrina.mp3" preload="metadata"></audio>
+        <audio id="audio-10" src="Morgenshtern - Pablo.mp3" preload="metadata"></audio>
+        <audio id="audio-11" src="Morgenshtern - Sheikh.mp3" preload="metadata"></audio>
+        <audio id="audio-12" src="Morgenshtern - Tatu.mp3" preload="metadata"></audio>
+        <audio id="audio-13" src="Morgenshtern - Teaser.mp3" preload="metadata"></audio>
+        <audio id="audio-14" src="Morgenshtern - Ugu.mp3" preload="metadata"></audio>
+        <audio id="audio-15" src="music/Morgenshtern - Антидепрессанты.mp3" preload="metadata"></audio>
+        <audio id="audio-16" src="music/MORGENSHTERN - Братосын.mp3" preload="metadata"></audio>
+        <audio id="audio-17" src="music/MORGENSHTERN - Буду твоей пальмой!.mp3" preload="metadata"></audio>
+        <audio id="audio-18" src="music/MORGENSHTERN - Вот так.mp3" preload="metadata"></audio>
+        <audio id="audio-19" src="music/MORGENSHTERN - Дикий.mp3" preload="metadata"></audio>
+        <audio id="audio-20" src="music/Morgenshtern - Дисс На Себя.mp3" preload="metadata"></audio>
+        <audio id="audio-21" src="music/Morgenshtern - Дом (Лондон, Прага, Ницца).mp3" preload="metadata"></audio>
+        <audio id="audio-22" src="music/Morgenshtern - Е! Банная.mp3" preload="metadata"></audio>
+        <audio id="audio-23" src="music/MORGENSHTERN - Если я спал с тобой.mp3" preload="metadata"></audio>
+        <audio id="audio-24" src="music/MORGENSHTERN - Кисоньке.mp3" preload="metadata"></audio>
+        <audio id="audio-25" src="music/Morgenshtern - Клип За 10 Лямов.mp3" preload="metadata"></audio>
+        <audio id="audio-26" src="music/MORGENSHTERN - Когда буду умирать.mp3" preload="metadata"></audio>
+        <audio id="audio-27" src="music/Morgenshtern - Красный флаг.mp3" preload="metadata"></audio>
+        <audio id="audio-28" src="music/Morgenshtern - Миллион За Минуту.mp3" preload="metadata"></audio>
+        <audio id="audio-29" src="music/MORGENSHTERN - Молодость.mp3" preload="metadata"></audio>
+        <audio id="audio-30" src="music/MORGENSHTERN - Мы так молоды.mp3" preload="metadata"></audio>
+        <audio id="audio-31" src="music/Morgenshtern - Номер.mp3" preload="metadata"></audio>
+        <audio id="audio-32" src="music/Morgenshtern - Ночь, Такси, Заметки.mp3" preload="metadata"></audio>
+        <audio id="audio-33" src="music/Morgenshtern - Один.mp3" preload="metadata"></audio>
+        <audio id="audio-34" src="music/Morgenshtern - Она-Оно.mp3" preload="metadata"></audio>
+        <audio id="audio-35" src="music/Morgenshtern - Она.mp3" preload="metadata"></audio>
+        <audio id="audio-36" src="music/Morgenshtern - Опа.mp3" preload="metadata"></audio>
+        <audio id="audio-37" src="music/MORGENSHTERN - Отпускаю.mp3" preload="metadata"></audio>
+        <audio id="audio-38" src="music/MORGENSHTERN - Пам Пам Пам!.mp3" preload="metadata"></audio>
+        <audio id="audio-39" src="music/MORGENSHTERN - Первый раз.mp3" preload="metadata"></audio>
+        <audio id="audio-40" src="music/MORGENSHTERN - Пиво и скейтборд.mp3" preload="metadata"></audio>
+        <audio id="audio-41" src="music/Morgenshtern - Повод.mp3" preload="metadata"></audio>
+        <audio id="audio-42" src="music/Morgenshtern - Пойдет.mp3" preload="metadata"></audio>
+        <audio id="audio-43" src="music/Morgenshtern - Последняя Любовь.mp3" preload="metadata"></audio>
+        <audio id="audio-44" src="music/Morgenshtern - Привет я Алишер.mp3" preload="metadata"></audio>
+        <audio id="audio-45" src="music/Morgenshtern - Пустой вокзал.mp3" preload="metadata"></audio>
+        <audio id="audio-46" src="music/Morgenshtern - Сдача.mp3" preload="metadata"></audio>
+        <audio id="audio-47" src="music/Morgenshtern - Селяви.mp3" preload="metadata"></audio>
+        <audio id="audio-48" src="music/MORGENSHTERN - Сон.mp3" preload="metadata"></audio>
+        <audio id="audio-49" src="music/Morgenshtern - Таблетки.mp3" preload="metadata"></audio>
+        <audio id="audio-50" src="music/MORGENSHTERN - Танцуй.mp3" preload="metadata"></audio>
+        <audio id="audio-51" src="music/Morgenshtern - Чёрный Русский.mp3" preload="metadata"></audio>
+        <audio id="audio-52" src="music/Morgenshtern - Четыре Украинки.mp3" preload="metadata"></audio>
+        <audio id="audio-53" src="music/Morgenshtern - Щека На Щеку.mp3" preload="metadata"></audio>
+        <audio id="audio-54" src="music/MORGENSHTERN - Я бы хотел.mp3" preload="metadata"></audio>
+    </div>
+
+    <!-- Liquid Animated Background Blobs -->
+    <div class="liquid-container">
+        <div class="liquid-blob blob-1"></div>
+        <div class="liquid-blob blob-2"></div>
+        <div class="liquid-blob blob-3"></div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="relative z-10 flex h-full w-full overflow-hidden p-0 md:p-4 gap-4">
+
+        <!-- DESKTOP SIDEBAR NAVIGATION -->
+        <aside class="hidden md:flex flex-col w-64 glass-panel rounded-3xl p-5 justify-between shrink-0">
+            <div class="space-y-6">
+                <!-- App Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-500 to-cyan-400 p-[1px] shadow-lg shadow-purple-500/30">
+                        <div class="w-full h-full bg-black/60 backdrop-blur-md rounded-[15px] flex items-center justify-center">
+                            <i class="fa-solid fa-compact-disc text-purple-400 text-xl animate-spin" style="animation-duration: 10s;"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-pink-300">LiquidMusic</h1>
+                        <p class="text-[10px] text-gray-400 font-medium">Morgenshtern Collection</p>
+                    </div>
+                </div>
+
+                <!-- Main Menu Links -->
+                <nav class="space-y-1.5 pt-2">
+                    <button id="sidebarHome" onclick="switchTab('all')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold text-white bg-purple-600/30 border border-purple-500/30 transition-all">
+                        <i class="fa-solid fa-house text-purple-400 text-sm"></i>
+                        <span>Bosh sahifa</span>
+                    </button>
+                    <button id="sidebarFavs" onclick="switchTab('favs')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all">
+                        <i class="fa-solid fa-heart text-pink-400 text-sm"></i>
+                        <span>Sevimlilar</span>
+                        <span id="favSidebarBadge" class="ml-auto bg-pink-500/20 text-pink-300 border border-pink-500/30 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                    </button>
+                    <button id="sidebarRecent" onclick="switchTab('recent')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all">
+                        <i class="fa-solid fa-clock-rotate-left text-cyan-400 text-sm"></i>
+                        <span>Yaqinda eshitilganlar</span>
+                        <span id="recentSidebarBadge" class="ml-auto bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+                    </button>
+                </nav>
+
+                <!-- Local File Upload Button -->
+                <div class="pt-4 border-t border-white/10 space-y-2">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider px-2">Mahalliy Fayllar</p>
+                    <button onclick="document.getElementById('localAudioInput').click()" class="w-full glass-btn px-4 py-2.5 rounded-2xl text-xs font-semibold text-purple-300 hover:text-white flex items-center justify-center gap-2 border-purple-500/30">
+                        <i class="fa-solid fa-folder-open text-purple-400"></i>
+                        <span>MP3 Yuklash</span>
+                    </button>
+                    <input type="file" id="localAudioInput" accept="audio/*" multiple class="hidden" onchange="handleLocalFiles(event)">
+                </div>
+
+                <!-- Genres List -->
+                <div class="pt-2 border-t border-white/10">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-3 px-2">Toifalar</p>
+                    <div class="space-y-1" id="desktopGenresContainer">
+                        <!-- Categories rendered dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shortcut Tip -->
+            <div class="glass-card p-3 rounded-2xl text-[11px] text-gray-400 flex items-center gap-2 border border-white/10">
+                <i class="fa-regular fa-keyboard text-purple-400 text-base"></i>
+                <span><strong class="text-white">Probel:</strong> Ijro / Pauza</span>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 flex flex-col glass-panel rounded-none md:rounded-3xl overflow-hidden h-full">
+            
+            <!-- Header (Search & Top Bar) -->
+            <header class="p-4 md:p-6 flex items-center justify-between gap-4 border-b border-white/10 shrink-0">
+                <!-- Mobile App Title -->
+                <div class="flex items-center gap-2.5 md:hidden">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 p-[1px]">
+                        <div class="w-full h-full bg-black/70 rounded-[11px] flex items-center justify-center">
+                            <i class="fa-solid fa-compact-disc text-purple-400 text-sm animate-spin"></i>
+                        </div>
+                    </div>
+                    <span class="font-bold text-sm text-white">LiquidMusic</span>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative flex-1 max-w-md">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                    <input type="text" id="searchInput" placeholder="Morgenshtern qo'shig'ini qidiring..." 
+                           class="w-full bg-white/5 border border-white/10 rounded-2xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50 focus:ring-1 focus:ring-purple-500/30 backdrop-blur-md transition">
+                </div>
+
+                <!-- Quick Action Header Badges -->
+                <div class="hidden sm:flex items-center gap-3">
+                    <button onclick="document.getElementById('localAudioInput').click()" class="glass-btn px-4 py-2 rounded-2xl text-xs font-semibold flex items-center gap-2 text-purple-300">
+                        <i class="fa-solid fa-file-audio text-purple-400"></i>
+                        <span>MP3 Tanlash</span>
+                    </button>
+                    <button onclick="switchTab('favs')" class="glass-btn px-4 py-2 rounded-2xl text-xs font-semibold flex items-center gap-2 text-white">
+                        <i class="fa-solid fa-heart text-pink-500"></i>
+                        <span>Sevimlilar (<span id="favCountBadge">0</span>)</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Content Grid / Music Feed -->
+            <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+                
+                <!-- Hero Banner -->
+                <div class="relative overflow-hidden rounded-3xl p-6 md:p-8 bg-gradient-to-r from-purple-900/40 via-pink-900/30 to-blue-900/40 border border-white/15 shadow-2xl flex flex-col justify-end min-h-[160px]">
+                    <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="relative z-10 max-w-lg space-y-2">
+                        <span class="bg-purple-500/30 border border-purple-400/30 text-purple-200 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">MORGENSHTERN COLLECTION</span>
+                        <h2 class="text-xl md:text-2xl font-black text-white" id="heroHeaderTitle">Morgenshtern Musiqalari Ro'yxati</h2>
+                        <p class="text-xs text-gray-300 line-clamp-2" id="heroHeaderDesc">Barcha audio mezonlar statik HTML &lt;audio src="music/..."&gt; teglar orqali biriktirilgan va avtomatik tarzda ijro etiladi.</p>
+                    </div>
+                </div>
+
+                <!-- Categories Horizontal Scroll Filter -->
+                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1" id="mobileGenreChips">
+                    <!-- Genre chips dynamically generated -->
+                </div>
+
+                <!-- Playlist Table / Grid -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center px-1">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i id="listTitleIcon" class="fa-solid fa-list-ul text-purple-400"></i>
+                            <span id="listTitle">Barcha Qo'shiqlar</span>
+                            <span class="text-xs text-gray-400 font-normal">(<span id="trackCount">0</span> ta)</span>
+                        </h3>
+                        <button id="clearRecentBtn" onclick="clearRecentlyPlayed()" class="hidden text-xs text-cyan-400 hover:text-cyan-300 underline">
+                            Tarixni tozalash
+                        </button>
+                    </div>
+
+                    <!-- Song Cards Container -->
+                    <div id="playlistContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <!-- Tracks populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- DESKTOP RIGHT VISUALIZER & QUEUE SIDEBAR -->
+        <aside class="hidden lg:flex flex-col w-72 glass-panel rounded-3xl p-5 justify-between shrink-0 overflow-hidden">
+            <div class="space-y-4 h-full flex flex-col">
+                <h3 class="text-xs font-extrabold text-gray-300 uppercase tracking-wider flex items-center justify-between">
+                    <span>Vizualizator</span>
+                    <i class="fa-solid fa-chart-simple text-purple-400"></i>
+                </h3>
+
+                <!-- Canvas Visualizer Container -->
+                <div class="w-full h-36 glass-card rounded-2xl overflow-hidden relative flex items-center justify-center p-2">
+                    <canvas id="desktopCanvas" class="w-full h-full"></canvas>
+                    <div id="canvasFallback" class="absolute inset-0 flex items-center justify-center gap-1 paused">
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar" style="animation-delay: 0.15s"></div>
+                        <div class="eq-bar" style="animation-delay: 0.3s"></div>
+                        <div class="eq-bar" style="animation-delay: 0.45s"></div>
+                        <div class="eq-bar" style="animation-delay: 0.6s"></div>
+                    </div>
+                </div>
+
+                <!-- Current Playing Track Info -->
+                <div class="text-center py-2 space-y-1">
+                    <h4 id="sideTrackTitle" class="font-bold text-sm text-white truncate">Musiqa Tanlanmagan</h4>
+                    <p id="sideTrackArtist" class="text-xs text-purple-300 truncate">Morgenshtern</p>
+                </div>
+
+                <!-- Mini Queue List -->
+                <div class="flex-1 overflow-hidden flex flex-col border-t border-white/10 pt-3">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Keyingi Ijro</p>
+                    <div id="queueContainer" class="flex-1 overflow-y-auto space-y-2 pr-1">
+                        <!-- Queue items -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- PERSISTENT FLOATING PLAYER BAR (DESKTOP & TABLET) -->
+    <div id="desktopPlayerBar" class="hidden md:flex fixed bottom-4 left-4 right-4 max-w-7xl mx-auto z-40 glass-panel rounded-3xl p-3 px-6 items-center justify-between gap-6 shadow-2xl border border-white/20">
+        
+        <!-- Currently Playing Track Meta -->
+        <div class="flex items-center gap-4 w-1/4 min-w-[200px]">
+            <div class="relative w-12 h-12 shrink-0">
+                <img id="deskCover" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&q=80" alt="Cover" class="w-full h-full object-cover rounded-2xl border border-white/20">
+            </div>
+            <div class="overflow-hidden">
+                <h4 id="deskTitle" class="font-bold text-xs text-white truncate">Kutmoqda...</h4>
+                <p id="deskArtist" class="text-[11px] text-purple-300 truncate">Musiqa tanlang</p>
+            </div>
+            <button id="deskFavBtn" onclick="toggleCurrentFavorite()" class="text-gray-400 hover:text-pink-500 transition-colors ml-2">
+                <i class="fa-solid fa-heart text-sm"></i>
+            </button>
+        </div>
+
+        <!-- Player Controls & Seekbar -->
+        <div class="flex-1 max-w-xl flex flex-col items-center gap-2">
+            <div class="flex items-center gap-5">
+                <button id="deskShuffleBtn" onclick="toggleShuffle()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-shuffle text-xs"></i>
+                </button>
+                <button onclick="prevTrack()" class="text-white hover:text-purple-300 transition-colors">
+                    <i class="fa-solid fa-backward-step text-sm"></i>
+                </button>
+                <button id="deskPlayBtn" onclick="togglePlay()" class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white flex items-center justify-center shadow-lg shadow-purple-500/30 hover:scale-105 active:scale-95 transition">
+                    <i id="deskPlayIcon" class="fa-solid fa-play text-xs ml-0.5"></i>
+                </button>
+                <button onclick="nextTrack()" class="text-white hover:text-purple-300 transition-colors">
+                    <i class="fa-solid fa-forward-step text-sm"></i>
+                </button>
+                <button id="deskRepeatBtn" onclick="toggleRepeat()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-repeat text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Scrubber Progress Bar -->
+            <div class="w-full flex items-center gap-3">
+                <span id="deskCurrentTime" class="text-[10px] text-gray-400 font-mono">00:00</span>
+                <input type="range" id="deskProgressBar" value="0" min="0" max="100" class="w-full">
+                <span id="deskDurationTime" class="text-[10px] text-gray-400 font-mono">00:00</span>
+            </div>
+        </div>
+
+        <!-- Volume Control -->
+        <div class="flex items-center gap-3 w-1/4 justify-end min-w-[150px]">
+            <button onclick="toggleMute()" class="text-gray-300 hover:text-white">
+                <i id="deskVolumeIcon" class="fa-solid fa-volume-high text-xs"></i>
+            </button>
+            <input type="range" id="deskVolumeBar" value="80" min="0" max="100" class="w-24">
+        </div>
+    </div>
+
+    <!-- MOBILE MINI PLAYER & BOTTOM NAVBAR -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40">
+        <!-- Floating Mini Player -->
+        <div id="miniPlayer" class="px-3 mb-2">
+            <div onclick="openMobilePlayerModal()" class="glass-panel rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl cursor-pointer">
+                <div class="flex items-center gap-3 overflow-hidden flex-1">
+                    <div class="relative w-11 h-11 shrink-0">
+                        <img id="miniCover" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&q=80" alt="Cover" class="w-full h-full object-cover rounded-xl border border-white/20">
+                    </div>
+                    <div class="overflow-hidden">
+                        <h4 id="miniTitle" class="font-bold text-xs text-white truncate">Kutmoqda...</h4>
+                        <p id="miniArtist" class="text-[11px] text-purple-300 truncate">Musiqani tanlang</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="event.stopPropagation(); togglePlay();" class="w-9 h-9 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white flex items-center justify-center shadow-lg">
+                        <i id="miniPlayIcon" class="fa-solid fa-play text-xs ml-0.5"></i>
+                    </button>
+                    <button onclick="event.stopPropagation(); nextTrack();" class="glass-btn w-9 h-9 rounded-full text-white flex items-center justify-center">
+                        <i class="fa-solid fa-forward-step text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Nav -->
+        <nav class="glass-panel border-t border-white/10 px-6 py-2.5 flex justify-between items-center rounded-t-3xl">
+            <button onclick="switchTab('all')" id="mobileNavHome" class="flex flex-col items-center gap-1 text-purple-400">
+                <i class="fa-solid fa-house text-base"></i>
+                <span class="text-[10px] font-semibold">Bosh sahifa</span>
+            </button>
+            <button onclick="switchTab('favs')" id="mobileNavFavs" class="flex flex-col items-center gap-1 text-gray-400">
+                <i class="fa-solid fa-heart text-base"></i>
+                <span class="text-[10px] font-medium">Sevimlilar</span>
+            </button>
+            <button onclick="switchTab('recent')" id="mobileNavRecent" class="flex flex-col items-center gap-1 text-gray-400">
+                <i class="fa-solid fa-clock-rotate-left text-base"></i>
+                <span class="text-[10px] font-medium">Yaqinda</span>
+            </button>
+            <button onclick="openMobilePlayerModal()" class="flex flex-col items-center gap-1 text-gray-400">
+                <i class="fa-solid fa-compact-disc text-base"></i>
+                <span class="text-[10px] font-medium">Pleyer</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- FULLSCREEN MOBILE PLAYER MODAL -->
+    <div id="fullPlayerModal" class="md:hidden fixed inset-0 z-50 w-full h-full bg-[#06070b]/95 backdrop-blur-3xl flex flex-col justify-between p-6 translate-y-full">
+        <div class="flex justify-between items-center">
+            <button onclick="closeMobilePlayerModal()" class="glass-btn w-10 h-10 rounded-2xl flex items-center justify-center text-white">
+                <i class="fa-solid fa-chevron-down text-sm"></i>
+            </button>
+            <div class="text-center">
+                <p class="text-[10px] uppercase tracking-widest text-purple-300 font-extrabold">Hozir Ijro Etilmoqda</p>
+                <p class="text-xs font-bold text-white">Morgenshtern Collection</p>
+            </div>
+            <button onclick="toggleCurrentFavorite()" class="glass-btn w-10 h-10 rounded-2xl flex items-center justify-center text-gray-300">
+                <i id="mobileModalFavIcon" class="fa-solid fa-heart text-sm"></i>
+            </button>
+        </div>
+
+        <div class="my-auto flex flex-col items-center space-y-4">
+            <div class="relative w-64 h-64 sm:w-72 sm:h-72">
+                <div class="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-600 to-pink-500 blur-2xl opacity-50"></div>
+                <img id="fullCover" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&q=80" alt="Cover" class="relative w-full h-full object-cover rounded-3xl border border-white/20 shadow-2xl">
+            </div>
+
+            <div class="text-center w-full px-4">
+                <h2 id="fullTitle" class="text-lg font-bold text-white truncate">Kutmoqda...</h2>
+                <p id="fullArtist" class="text-xs text-purple-300 font-medium mt-1 truncate">Morgenshtern</p>
+            </div>
+        </div>
+
+        <div class="w-full space-y-5">
+            <div class="space-y-1">
+                <input type="range" id="mobileProgressBar" value="0" min="0" max="100" class="w-full">
+                <div class="flex justify-between text-[10px] text-gray-400 font-mono">
+                    <span id="mobileCurrentTime">00:00</span>
+                    <span id="mobileDurationTime">00:00</span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between px-2">
+                <button id="mobileShuffleBtn" onclick="toggleShuffle()" class="text-gray-400">
+                    <i class="fa-solid fa-shuffle text-sm"></i>
+                </button>
+                <button onclick="prevTrack()" class="glass-btn w-12 h-12 rounded-2xl flex items-center justify-center text-white">
+                    <i class="fa-solid fa-backward-step text-base"></i>
+                </button>
+                <button id="mobilePlayBtn" onclick="togglePlay()" class="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-500 via-pink-500 to-cyan-400 text-white flex items-center justify-center shadow-xl shadow-purple-500/40">
+                    <i id="mobilePlayIcon" class="fa-solid fa-play text-xl ml-1"></i>
+                </button>
+                <button onclick="nextTrack()" class="glass-btn w-12 h-12 rounded-2xl flex items-center justify-center text-white">
+                    <i class="fa-solid fa-forward-step text-base"></i>
+                </button>
+                <button id="mobileRepeatBtn" onclick="toggleRepeat()" class="text-gray-400">
+                    <i class="fa-solid fa-repeat text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+<audio src=""></audio>
+    <script>
+        // Exact 54 song titles directly mapped to the static HTML <audio> tag IDs
+        const staticAudioList = [
+            { id: 1, title: "12", artist: "Morgenshtern", audioId: "audio-1" },
+            { id: 2, title: "B", artist: "Morgenshtern", audioId: "audio-2" },
+            { id: 3, title: "Balance", artist: "Morgenshtern", audioId: "audio-3" },
+            { id: 4, title: "Cctv", artist: "Morgenshtern", audioId: "audio-4" },
+            { id: 5, title: "Cristal & MOЁТ", artist: "Morgenshtern", audioId: "audio-5" },
+            { id: 6, title: "Eeee", artist: "Morgenshtern", audioId: "audio-6" },
+            { id: 7, title: "Guf Diss", artist: "Morgenshtern", audioId: "audio-7" },
+            { id: 8, title: "ICE", artist: "Morgenshtern", audioId: "audio-8" },
+            { id: 9, title: "Katrina", artist: "Morgenshtern", audioId: "audio-9" },
+            { id: 10, title: "Pablo", artist: "Morgenshtern", audioId: "audio-10" },
+            { id: 11, title: "Sheikh", artist: "Morgenshtern", audioId: "audio-11" },
+            { id: 12, title: "Tatu", artist: "Morgenshtern", audioId: "audio-12" },
+            { id: 13, title: "Teaser", artist: "Morgenshtern", audioId: "audio-13" },
+            { id: 14, title: "Ugu", artist: "Morgenshtern", audioId: "audio-14" },
+            { id: 15, title: "Антидепрессанты", artist: "Morgenshtern", audioId: "audio-15" },
+            { id: 16, title: "Братосын", artist: "MORGENSHTERN", audioId: "audio-16" },
+            { id: 17, title: "Буду твоей пальмой!", artist: "MORGENSHTERN", audioId: "audio-17" },
+            { id: 18, title: "Вот так", artist: "MORGENSHTERN", audioId: "audio-18" },
+            { id: 19, title: "Дикий", artist: "MORGENSHTERN", audioId: "audio-19" },
+            { id: 20, title: "Дисс На Себя", artist: "Morgenshtern", audioId: "audio-20" },
+            { id: 21, title: "Дом (Лондон, Прага, Ницца)", artist: "Morgenshtern", audioId: "audio-21" },
+            { id: 22, title: "Е! Банная", artist: "Morgenshtern", audioId: "audio-22" },
+            { id: 23, title: "Если я спал с тобой", artist: "MORGENSHTERN", audioId: "audio-23" },
+            { id: 24, title: "Кисоньке", artist: "MORGENSHTERN", audioId: "audio-24" },
+            { id: 25, title: "Клип За 10 Лямов", artist: "Morgenshtern", audioId: "audio-25" },
+            { id: 26, title: "Когда буду умирать", artist: "MORGENSHTERN", audioId: "audio-26" },
+            { id: 27, title: "Красный флаг", artist: "Morgenshtern", audioId: "audio-27" },
+            { id: 28, title: "Миллион За Минуту", artist: "Morgenshtern", audioId: "audio-28" },
+            { id: 29, title: "Молодость", artist: "MORGENSHTERN", audioId: "audio-29" },
+            { id: 30, title: "Мы так молоды", artist: "MORGENSHTERN", audioId: "audio-30" },
+            { id: 31, title: "Номер", artist: "Morgenshtern", audioId: "audio-31" },
+            { id: 32, title: "Ночь, Такси, Заметки", artist: "Morgenshtern", audioId: "audio-32" },
+            { id: 33, title: "Один", artist: "Morgenshtern", audioId: "audio-33" },
+            { id: 34, title: "Она-Оно", artist: "Morgenshtern", audioId: "audio-34" },
+            { id: 35, title: "Она", artist: "Morgenshtern", audioId: "audio-35" },
+            { id: 36, title: "Опа", artist: "Morgenshtern", audioId: "audio-36" },
+            { id: 37, title: "Отпускаю", artist: "MORGENSHTERN", audioId: "audio-37" },
+            { id: 38, title: "Пам Пам Пам!", artist: "MORGENSHTERN", audioId: "audio-38" },
+            { id: 39, title: "Первый раз", artist: "MORGENSHTERN", audioId: "audio-39" },
+            { id: 40, title: "Пиво и скейтборд", artist: "MORGENSHTERN", audioId: "audio-40" },
+            { id: 41, title: "Повод", artist: "Morgenshtern", audioId: "audio-41" },
+            { id: 42, title: "Пойдет", artist: "Morgenshtern", audioId: "audio-42" },
+            { id: 43, title: "Последняя Любовь", artist: "Morgenshtern", audioId: "audio-43" },
+            { id: 44, title: "Привет я Алишер", artist: "Morgenshtern", audioId: "audio-44" },
+            { id: 45, title: "Пустой вокзал", artist: "Morgenshtern", audioId: "audio-45" },
+            { id: 46, title: "Сдача", artist: "Morgenshtern", audioId: "audio-46" },
+            { id: 47, title: "Селяви", artist: "Morgenshtern", audioId: "audio-47" },
+            { id: 48, title: "Сон", artist: "MORGENSHTERN", audioId: "audio-48" },
+            { id: 49, title: "Таблетки", artist: "Morgenshtern", audioId: "audio-49" },
+            { id: 50, title: "Танцуй", artist: "MORGENSHTERN", audioId: "audio-50" },
+            { id: 51, title: "Чёрный Русский", artist: "Morgenshtern", audioId: "audio-51" },
+            { id: 52, title: "Четыре Украинки", artist: "Morgenshtern", audioId: "audio-52" },
+            { id: 53, title: "Щека На Щеку", artist: "Morgenshtern", audioId: "audio-53" },
+            { id: 54, title: "Я бы хотел", artist: "MORGENSHTERN", audioId: "audio-54" }
+        ];
+
+        // Generate Playlist Items using static HTML audio references
+        let playlist = staticAudioList.map(item => ({
+            ...item,
+            genre: "Morgenshtern",
+            duration: "03:15",
+            cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&q=80",
+            isLocal: false
+        }));
+
+        const categories = ["Barchasi", "Morgenshtern", "Mahalliy Fayllar"];
+
+        // State Management
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+        let isShuffle = false;
+        let isRepeat = false;
+        let currentTab = "all"; // 'all', 'favs', 'recent'
+        let selectedCategory = "Barchasi";
+
+        // Current Active HTML Audio Element
+        let activeAudio = null;
+
+        // Load Favorites & History from LocalStorage
+        let favorites = new Set(JSON.parse(localStorage.getItem('liquid_morgen_favs') || '[]'));
+        let recentPlayed = JSON.parse(localStorage.getItem('liquid_morgen_recent') || '[]');
+
+        // Visualizer setup
+        let audioCtx, analyser, sourceNode, canvasCtx;
+        const connectedAudioElements = new WeakSet();
+
+        // DOM Elements
+        const playlistContainer = document.getElementById('playlistContainer');
+        const queueContainer = document.getElementById('queueContainer');
+        const searchInput = document.getElementById('searchInput');
+        const listTitle = document.getElementById('listTitle');
+        const listTitleIcon = document.getElementById('listTitleIcon');
+        const trackCount = document.getElementById('trackCount');
+        const favCountBadge = document.getElementById('favCountBadge');
+        const favSidebarBadge = document.getElementById('favSidebarBadge');
+        const recentSidebarBadge = document.getElementById('recentSidebarBadge');
+        const clearRecentBtn = document.getElementById('clearRecentBtn');
+
+        window.onload = function() {
+            initApp();
+        };
+
+        function initApp() {
+            renderCategories();
+            renderPlaylist();
+            renderQueue();
+            loadTrack(0, false);
+            updateBadges();
+            setupCanvasVisualizer();
+        }
+
+        // Save State
+        function saveState() {
+            localStorage.setItem('liquid_morgen_favs', JSON.stringify([...favorites]));
+            localStorage.setItem('liquid_morgen_recent', JSON.stringify(recentPlayed));
+            updateBadges();
+        }
+
+        function updateBadges() {
+            favCountBadge.textContent = favorites.size;
+            favSidebarBadge.textContent = favorites.size;
+            recentSidebarBadge.textContent = recentPlayed.length;
+        }
+
+        // Handle Local User MP3 Files
+        function handleLocalFiles(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
+            files.forEach(file => {
+                const objectUrl = URL.createObjectURL(file);
+                const customAudio = document.createElement('audio');
+                const customId = `audio-local-${Date.now()}-${Math.random()}`;
+                customAudio.id = customId;
+                customAudio.src = objectUrl;
+                customAudio.preload = 'metadata';
+                document.getElementById('audioContainer').appendChild(customAudio);
+
+                const newSong = {
+                    id: Date.now() + Math.random(),
+                    title: file.name.replace(/\.[^/.]+$/, ""),
+                    artist: "Mahalliy Fayl",
+                    genre: "Mahalliy Fayllar",
+                    audioId: customId,
+                    duration: "--:--",
+                    cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&q=80",
+                    isLocal: true
+                };
+                playlist.unshift(newSong);
+            });
+
+            selectedCategory = "Barchasi";
+            renderCategories();
+            renderPlaylist();
+            loadTrack(0, true);
+        }
+
+        function addToRecentlyPlayed(trackId) {
+            recentPlayed = recentPlayed.filter(id => id !== trackId);
+            recentPlayed.unshift(trackId);
+            if (recentPlayed.length > 30) recentPlayed = recentPlayed.slice(0, 30);
+            saveState();
+        }
+
+        function clearRecentlyPlayed() {
+            recentPlayed = [];
+            saveState();
+            if (currentTab === 'recent') renderPlaylist();
+        }
+
+        function renderCategories() {
+            const sidebarContainer = document.getElementById('desktopGenresContainer');
+            const chipsContainer = document.getElementById('mobileGenreChips');
+            
+            sidebarContainer.innerHTML = '';
+            chipsContainer.innerHTML = '';
+
+            categories.forEach(cat => {
+                const isSel = selectedCategory === cat;
+                
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                    isSel ? 'text-purple-300 bg-white/10 font-bold border border-purple-500/30' : 'text-gray-400 hover:text-white'
+                }`;
+                btn.textContent = cat;
+                btn.onclick = () => { 
+                    selectedCategory = cat; 
+                    renderCategories(); 
+                    renderPlaylist(); 
+                };
+                sidebarContainer.appendChild(btn);
+
+                const chip = document.createElement('button');
+                chip.className = `px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
+                    isSel ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/30' : 'glass-btn text-gray-300'
+                }`;
+                chip.textContent = cat;
+                chip.onclick = () => { 
+                    selectedCategory = cat; 
+                    renderCategories(); 
+                    renderPlaylist(); 
+                };
+                chipsContainer.appendChild(chip);
+            });
+        }
+
+        function filterTracks() {
+            const query = searchInput.value.toLowerCase().trim();
+            let baseList = [];
+
+            if (currentTab === 'all') {
+                baseList = [...playlist];
+            } else if (currentTab === 'favs') {
+                baseList = playlist.filter(song => favorites.has(song.id));
+            } else if (currentTab === 'recent') {
+                baseList = recentPlayed
+                    .map(id => playlist.find(song => song.id === id))
+                    .filter(Boolean);
+            }
+
+            return baseList.filter(song => {
+                const matchesQuery = song.title.toLowerCase().includes(query) || song.artist.toLowerCase().includes(query);
+                const matchesCategory = selectedCategory === "Barchasi" || song.genre === selectedCategory;
+                return matchesQuery && matchesCategory;
+            });
+        }
+
+        function renderPlaylist() {
+            playlistContainer.innerHTML = '';
+            const filtered = filterTracks();
+            trackCount.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                let emptyMsg = "Musiqa topilmadi";
+                if (currentTab === 'favs') emptyMsg = "Sevimli musiqalar ro'yxati bo'sh.";
+                if (currentTab === 'recent') emptyMsg = "Yaqinda eshitilgan musiqalar tarixi bo'sh.";
+
+                playlistContainer.innerHTML = `
+                    <div class="col-span-full text-center text-gray-400 py-12 text-xs bg-white/5 rounded-3xl border border-white/10 p-6">
+                        <i class="fa-solid fa-music text-3xl text-purple-400/50 mb-3 block"></i>
+                        ${emptyMsg}
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(song => {
+                const isCurrent = playlist[currentTrackIndex]?.id === song.id;
+                const isFav = favorites.has(song.id);
+
+                const card = document.createElement('div');
+                card.className = `glass-card p-3 rounded-2xl flex items-center justify-between gap-3 cursor-pointer ${
+                    isCurrent ? 'border-purple-500/60 bg-purple-500/20' : ''
+                }`;
+                card.onclick = () => {
+                    const realIdx = playlist.findIndex(s => s.id === song.id);
+                    if (realIdx !== -1) {
+                        loadTrack(realIdx);
+                        playAudio();
+                    }
+                };
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="relative w-11 h-11 shrink-0">
+                            <img src="${song.cover}" alt="${song.title}" class="w-full h-full object-cover rounded-xl">
+                            ${isCurrent && isPlaying ? `
+                                <div class="absolute inset-0 bg-black/40 rounded-xl flex items-center justify-center">
+                                    <i class="fa-solid fa-volume-high text-purple-300 animate-pulse text-xs"></i>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="overflow-hidden">
+                            <h4 class="font-bold text-xs ${isCurrent ? 'text-purple-300' : 'text-white'} truncate">${song.title}</h4>
+                            <p class="text-[11px] text-gray-400 truncate">${song.artist}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="event.stopPropagation(); toggleFavorite(${song.id})" class="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-pink-500 transition-colors">
+                            <i class="fa-solid fa-heart text-xs ${isFav ? 'text-pink-500' : ''}"></i>
+                        </button>
+                    </div>
+                `;
+                playlistContainer.appendChild(card);
+            });
+        }
+
+        function renderQueue() {
+            queueContainer.innerHTML = '';
+            const nextTracks = playlist.slice(currentTrackIndex + 1).concat(playlist.slice(0, currentTrackIndex));
+            
+            nextTracks.slice(0, 5).forEach(song => {
+                const item = document.createElement('div');
+                item.className = 'glass-card p-2 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-white/10';
+                item.onclick = () => {
+                    const idx = playlist.findIndex(s => s.id === song.id);
+                    loadTrack(idx);
+                    playAudio();
+                };
+                item.innerHTML = `
+                    <img src="${song.cover}" class="w-8 h-8 object-cover rounded-lg">
+                    <div class="overflow-hidden flex-1">
+                        <h5 class="text-xs font-semibold text-white truncate">${song.title}</h5>
+                        <p class="text-[10px] text-gray-400 truncate">${song.artist}</p>
+                    </div>
+                `;
+                queueContainer.appendChild(item);
+            });
+        }
+
+        function loadTrack(index, autoPlay = true) {
+            if (!playlist[index]) return;
+
+            // Pause existing HTML audio if playing
+            if (activeAudio) {
+                activeAudio.pause();
+                detachAudioListeners(activeAudio);
+            }
+
+            currentTrackIndex = index;
+            const track = playlist[currentTrackIndex];
+
+            // Get target static HTML audio element by ID
+            activeAudio = document.getElementById(track.audioId);
+            
+            if (activeAudio) {
+                attachAudioListeners(activeAudio);
+                activeAudio.volume = document.getElementById('deskVolumeBar').value / 100;
+            }
+
+            // Sync Players Meta
+            document.getElementById('deskTitle').textContent = track.title;
+            document.getElementById('deskArtist').textContent = track.artist;
+            document.getElementById('deskCover').src = track.cover;
+
+            document.getElementById('miniTitle').textContent = track.title;
+            document.getElementById('miniArtist').textContent = track.artist;
+            document.getElementById('miniCover').src = track.cover;
+
+            document.getElementById('fullTitle').textContent = track.title;
+            document.getElementById('fullArtist').textContent = track.artist;
+            document.getElementById('fullCover').src = track.cover;
+
+            document.getElementById('sideTrackTitle').textContent = track.title;
+            document.getElementById('sideTrackArtist').textContent = track.artist;
+
+            const isFav = favorites.has(track.id);
+            document.getElementById('deskFavBtn').className = isFav ? 'text-pink-500 ml-2' : 'text-gray-400 hover:text-pink-500 ml-2';
+            document.getElementById('mobileModalFavIcon').className = `fa-solid fa-heart text-sm ${isFav ? 'text-pink-500' : 'text-gray-300'}`;
+
+            addToRecentlyPlayed(track.id);
+
+            renderPlaylist();
+            renderQueue();
+
+            if (autoPlay) playAudio();
+        }
+
+        function onAudioTimeUpdate() {
+            if (activeAudio && activeAudio.duration) {
+                const prog = (activeAudio.currentTime / activeAudio.duration) * 100;
+                document.getElementById('deskProgressBar').value = prog;
+                document.getElementById('mobileProgressBar').value = prog;
+
+                const cur = formatTime(activeAudio.currentTime);
+                const dur = formatTime(activeAudio.duration);
+
+                document.getElementById('deskCurrentTime').textContent = cur;
+                document.getElementById('deskDurationTime').textContent = dur;
+                document.getElementById('mobileCurrentTime').textContent = cur;
+                document.getElementById('mobileDurationTime').textContent = dur;
+            }
+        }
+
+        function onAudioEnded() {
+            if (isRepeat) playAudio();
+            else nextTrack();
+        }
+
+        function attachAudioListeners(audioEl) {
+            audioEl.addEventListener('timeupdate', onAudioTimeUpdate);
+            audioEl.addEventListener('ended', onAudioEnded);
+            connectAudioToVisualizer(audioEl);
+        }
+
+        function detachAudioListeners(audioEl) {
+            audioEl.removeEventListener('timeupdate', onAudioTimeUpdate);
+            audioEl.removeEventListener('ended', onAudioEnded);
+        }
+
+        function playAudio() {
+            if (!activeAudio) return;
+            isPlaying = true;
+
+            activeAudio.play().then(() => {
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            }).catch(e => {
+                console.log("Play failed or interrupted:", e);
+            });
+
+            updatePlayIcons(true);
+            renderPlaylist();
+        }
+
+        function pauseAudio() {
+            if (!activeAudio) return;
+            isPlaying = false;
+            activeAudio.pause();
+            updatePlayIcons(false);
+            renderPlaylist();
+        }
+
+        function togglePlay() {
+            if (isPlaying) pauseAudio();
+            else playAudio();
+        }
+
+        function updatePlayIcons(playing) {
+            const deskIcon = document.getElementById('deskPlayIcon');
+            const miniIcon = document.getElementById('miniPlayIcon');
+            const mobileIcon = document.getElementById('mobilePlayIcon');
+
+            if (playing) {
+                deskIcon.className = "fa-solid fa-pause text-xs";
+                miniIcon.className = "fa-solid fa-pause text-xs";
+                mobileIcon.className = "fa-solid fa-pause text-xl";
+                document.getElementById('canvasFallback').classList.remove('paused');
+            } else {
+                deskIcon.className = "fa-solid fa-play text-xs ml-0.5";
+                miniIcon.className = "fa-solid fa-play text-xs ml-0.5";
+                mobileIcon.className = "fa-solid fa-play text-xl ml-1";
+                document.getElementById('canvasFallback').classList.add('paused');
+            }
+        }
+
+        function prevTrack() {
+            if (isShuffle) {
+                currentTrackIndex = Math.floor(Math.random() * playlist.length);
+            } else {
+                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            }
+            loadTrack(currentTrackIndex);
+        }
+
+        function nextTrack() {
+            if (isShuffle) {
+                currentTrackIndex = Math.floor(Math.random() * playlist.length);
+            } else {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            }
+            loadTrack(currentTrackIndex);
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            document.getElementById('deskShuffleBtn').classList.toggle('text-purple-400', isShuffle);
+            document.getElementById('mobileShuffleBtn').classList.toggle('text-purple-400', isShuffle);
+        }
+
+        function toggleRepeat() {
+            isRepeat = !isRepeat;
+            document.getElementById('deskRepeatBtn').classList.toggle('text-purple-400', isRepeat);
+            document.getElementById('mobileRepeatBtn').classList.toggle('text-purple-400', isRepeat);
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.has(id)) {
+                favorites.delete(id);
+            } else {
+                favorites.add(id);
+            }
+            saveState();
+            renderPlaylist();
+
+            if (playlist[currentTrackIndex]?.id === id) {
+                const isFav = favorites.has(id);
+                document.getElementById('deskFavBtn').className = isFav ? 'text-pink-500 ml-2' : 'text-gray-400 hover:text-pink-500 ml-2';
+                document.getElementById('mobileModalFavIcon').className = `fa-solid fa-heart text-sm ${isFav ? 'text-pink-500' : 'text-gray-300'}`;
+            }
+        }
+
+        function toggleCurrentFavorite() {
+            if (playlist[currentTrackIndex]) {
+                toggleFavorite(playlist[currentTrackIndex].id);
+            }
+        }
+
+        function toggleMute() {
+            if (!activeAudio) return;
+            activeAudio.muted = !activeAudio.muted;
+            document.getElementById('deskVolumeIcon').className = activeAudio.muted 
+                ? "fa-solid fa-volume-xmark text-xs text-red-400" 
+                : "fa-solid fa-volume-high text-xs";
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            const heroHeaderTitle = document.getElementById('heroHeaderTitle');
+            const heroHeaderDesc = document.getElementById('heroHeaderDesc');
+
+            document.querySelectorAll('.sidebar-link').forEach(el => {
+                el.className = "sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all";
+            });
+
+            if (tab === 'all') {
+                listTitle.textContent = "Barcha Qo'shiqlar";
+                listTitleIcon.className = "fa-solid fa-list-ul text-purple-400";
+                heroHeaderTitle.textContent = "Morgenshtern Musiqalari Ro'yxati";
+                heroHeaderDesc.textContent = "Barcha audio mezonlar statik HTML <audio src=\"music/...\"> teglar orqali biriktirilgan va avtomatik tarzda ijro etiladi.";
+                document.getElementById('sidebarHome').className = "sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold text-white bg-purple-600/30 border border-purple-500/30 transition-all";
+                clearRecentBtn.classList.add('hidden');
+            } else if (tab === 'favs') {
+                listTitle.textContent = "Sevimli Musiqalar";
+                listTitleIcon.className = "fa-solid fa-heart text-pink-500";
+                heroHeaderTitle.textContent = "Sevimli Taronalaringiz";
+                heroHeaderDesc.textContent = "O'zingizga yoqqan Morgenshtern musiqalarini saqlang va tinglang.";
+                document.getElementById('sidebarFavs').className = "sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold text-white bg-pink-600/30 border border-pink-500/30 transition-all";
+                clearRecentBtn.classList.add('hidden');
+            } else if (tab === 'recent') {
+                listTitle.textContent = "Yaqinda Eshitilganlar";
+                listTitleIcon.className = "fa-solid fa-clock-rotate-left text-cyan-400";
+                heroHeaderTitle.textContent = "Yaqinda Tinglangan Tarix";
+                heroHeaderDesc.textContent = "Oxirgi marta tinglagan taronalaringiz ro'yxati.";
+                document.getElementById('sidebarRecent').className = "sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold text-white bg-cyan-600/30 border border-cyan-500/30 transition-all";
+                clearRecentBtn.classList.remove('hidden');
+            }
+            
+            document.getElementById('mobileNavHome').className = tab === 'all' ? "flex flex-col items-center gap-1 text-purple-400" : "flex flex-col items-center gap-1 text-gray-400";
+            document.getElementById('mobileNavFavs').className = tab === 'favs' ? "flex flex-col items-center gap-1 text-pink-400" : "flex flex-col items-center gap-1 text-gray-400";
+            document.getElementById('mobileNavRecent').className = tab === 'recent' ? "flex flex-col items-center gap-1 text-cyan-400" : "flex flex-col items-center gap-1 text-gray-400";
+
+            renderPlaylist();
+        }
+
+        function openMobilePlayerModal() {
+            document.getElementById('fullPlayerModal').classList.remove('translate-y-full');
+            document.getElementById('fullPlayerModal').classList.add('translate-y-0');
+        }
+
+        function closeMobilePlayerModal() {
+            document.getElementById('fullPlayerModal').classList.remove('translate-y-0');
+            document.getElementById('fullPlayerModal').classList.add('translate-y-full');
+        }
+
+        function formatTime(secs) {
+            if (isNaN(secs)) return "00:00";
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60);
+            return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        // Scrubbing & Controls
+        document.getElementById('deskProgressBar').addEventListener('input', (e) => {
+            if (activeAudio && activeAudio.duration) {
+                activeAudio.currentTime = (e.target.value / 100) * activeAudio.duration;
+            }
+        });
+
+        document.getElementById('mobileProgressBar').addEventListener('input', (e) => {
+            if (activeAudio && activeAudio.duration) {
+                activeAudio.currentTime = (e.target.value / 100) * activeAudio.duration;
+            }
+        });
+
+        document.getElementById('deskVolumeBar').addEventListener('input', (e) => {
+            if (activeAudio) activeAudio.volume = e.target.value / 100;
+        });
+
+        searchInput.addEventListener('input', renderPlaylist);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.code === 'Space') {
+                e.preventDefault();
+                togglePlay();
+            } else if (e.code === 'ArrowRight') {
+                if (activeAudio) activeAudio.currentTime = Math.min(activeAudio.currentTime + 5, activeAudio.duration || 0);
+            } else if (e.code === 'ArrowLeft') {
+                if (activeAudio) activeAudio.currentTime = Math.max(activeAudio.currentTime - 5, 0);
+            }
+        });
+
+        function connectAudioToVisualizer(audioEl) {
+            if (!audioCtx || connectedAudioElements.has(audioEl)) return;
+            try {
+                const node = audioCtx.createMediaElementSource(audioEl);
+                node.connect(analyser);
+                connectedAudioElements.add(audioEl);
+            } catch(e) {
+                console.log("MediaElementSource connection note:", e);
+            }
+        }
+
+        function setupCanvasVisualizer() {
+            const canvas = document.getElementById('desktopCanvas');
+            canvasCtx = canvas.getContext('2d');
+
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                analyser.connect(audioCtx.destination);
+                analyser.fftSize = 64;
+
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                function draw() {
+                    requestAnimationFrame(draw);
+                    analyser.getByteFrequencyData(dataArray);
+
+                    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+                    const barWidth = (canvas.width / bufferLength) * 2;
+                    let x = 0;
+
+                    for (let i = 0; i < bufferLength; i++) {
+                        const barHeight = (dataArray[i] / 255) * canvas.height;
+                        const gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, 0);
+                        gradient.addColorStop(0, '#ec4899');
+                        gradient.addColorStop(1, '#a855f7');
+
+                        canvasCtx.fillStyle = gradient;
+                        canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+                        x += barWidth;
+                    }
+                }
+                draw();
+            } catch(e) {}
+        }
+    </script>
+</body>
+</html>
