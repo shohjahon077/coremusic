@@ -2,7 +2,15 @@ const root = document.documentElement;
 const appState = {
   token: localStorage.getItem('coremusic-token') || '',
   currentTrack: null,
-  favorites: JSON.parse(localStorage.getItem('coremusic-favorites') || '[]'),
+  favorites: (() => {
+    try {
+      const saved = localStorage.getItem('coremusic-favorites');
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error('Invalid favorites data:', error);
+      return [];
+    }
+  })(),
   audio: null,
   search: ''
 };
@@ -33,12 +41,39 @@ const els = {
 };
 
 const trackSeed = [
-  { id: 'm1', title: 'Первый раз', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:18', cover: '🎵' },
-  { id: 'm2', title: 'Группа крови', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:45', cover: '🎧' },
-  { id: 'm3', title: '12', artist: 'Morgenshtern', genre: 'Rap', duration: '2:56', cover: '🔥' },
-  { id: 'n1', title: 'Midnight Echo', artist: 'Nova Lane', genre: 'Electronic', duration: '4:12', cover: '🌙' },
-  { id: 'n2', title: 'Aurora Drift', artist: 'Luma', genre: 'Synthwave', duration: '3:54', cover: '✨' },
-  { id: 'n3', title: 'City Lights', artist: 'Kairo', genre: 'Pop', duration: '4:06', cover: '🌃' }
+  { id: 'm1', title: 'Первый раз', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:18', cover: '🎵', audio: 'MORGENSHTERN - Первый раз.mp3' },
+  { id: 'm2', title: 'Группа крови', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:45', cover: '🎧', audio: 'MORGENSHTERN - Группа крови.mp3' },
+  { id: 'm3', title: '12', artist: 'Morgenshtern', genre: 'Rap', duration: '2:56', cover: '🔥', audio: 'Morgenshtern - 12.mp3' },
+  { id: 'm4', title: 'Антидепрессанты', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:32', cover: '💊', audio: 'MORGENSHTERN - Антидепрессанты.mp3' },
+  { id: 'm5', title: 'Дикий', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:24', cover: '🐺', audio: 'MORGENSHTERN - Дикий.mp3' },
+  { id: 'm6', title: 'Дом (Лондон, Прага, Ницца)', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '4:01', cover: '🏠', audio: 'MORGENSHTERN - Дом (Лондон, Прага, Ницца).mp3' },
+  { id: 'm7', title: 'Молодость', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:38', cover: '🌟', audio: 'MORGENSHTERN - Молодость.mp3' },
+  { id: 'm8', title: 'Номер', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:45', cover: '📞', audio: 'MORGENSHTERN - Номер.mp3' },
+  { id: 'm9', title: 'Она', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:22', cover: '💕', audio: 'MORGENSHTERN - Она.mp3' },
+  { id: 'm10', title: 'Опа', artist: 'MORGENSHTERN', genre: 'Rap', duration: '2:58', cover: '🎉', audio: 'MORGENSHTERN - Опа.mp3' },
+  { id: 'm11', title: 'Повод', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:15', cover: '🎭', audio: 'MORGENSHTERN - Повод.mp3' },
+  { id: 'm12', title: 'Пойдет', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:28', cover: '🚀', audio: 'MORGENSHTERN - Пойдет.mp3' },
+  { id: 'm13', title: 'Последняя Любовь', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:54', cover: '💔', audio: 'MORGENSHTERN - Последняя Любовь.mp3' },
+  { id: 'm14', title: 'Пустой вокзал', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:42', cover: '🚂', audio: 'MORGENSHTERN - Пустой вокзал.mp3' },
+  { id: 'm15', title: 'Сдача', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:11', cover: '💰', audio: 'MORGENSHTERN - Сдача.mp3' },
+  { id: 'm16', title: 'Селяви', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:33', cover: '🌴', audio: 'MORGENSHTERN - Селяви.mp3' },
+  { id: 'm17', title: 'Таблетки', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:19', cover: '💊', audio: 'MORGENSHTERN - Таблетки.mp3' },
+  { id: 'm18', title: 'Четыре Украинки', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:27', cover: '🎸', audio: 'MORGENSHTERN - Четыре Украинки.mp3' },
+  { id: 'm19', title: 'Чёрный Рус��кий', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:41', cover: '🖤', audio: 'MORGENSHTERN - Чёрный Русский.mp3' },
+  { id: 'm20', title: 'Щека На Щеку', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:35', cover: '👄', audio: 'MORGENSHTERN - Щека На Щеку.mp3' },
+  { id: 'm21', title: 'Я Рок Звезда', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:28', cover: '⭐', audio: 'MORGENSHTERN - Я Рок Звезда.mp3' },
+  { id: 'm22', title: 'Я Убил Марка', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '4:02', cover: '⚡', audio: 'morgenshtern-ia-ubil-marka-oksimiron-diss(1).mp3' },
+  { id: 'm23', title: 'Если я спал с тобой', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:45', cover: '🛏️', audio: 'MORGENSHTERN - Если я спал с тобой.mp3' },
+  { id: 'm24', title: 'Кисоньке', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:18', cover: '🐱', audio: 'MORGENSHTERN - Кисоньке.mp3' },
+  { id: 'm25', title: 'Когда budu умирать', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:52', cover: '☠️', audio: 'MORGENSHTERN - Когда буду умирать.mp3' },
+  { id: 'm26', title: 'Мы так молоды', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:41', cover: '👶', audio: 'MORGENSHTERN - Мы так молоды.mp3' },
+  { id: 'm27', title: 'Отпускаю', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:33', cover: '🕊️', audio: 'MORGENSHTERN - Отпускаю.mp3' },
+  { id: 'm28', title: 'Пам Пам Пам', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:26', cover: '🔫', audio: 'MORGENSHTERN - Пам Пам Пам!.mp3' },
+  { id: 'm29', title: 'Пиво и скейтборд', artist: 'MORGENSHTERN', genre: 'Rap', duration: '3:39', cover: '🛹', audio: 'MORGENSHTERN - Пиво и скейтборд.mp3' },
+  { id: 'm30', title: 'Привет я Алишер', artist: 'MORGENSHTERN', genre: 'Hip-Hop', duration: '3:44', cover: '👋', audio: 'MORGENSHTERN - Привет я Алишер.mp3' },
+  { id: 'n1', title: 'Midnight Echo', artist: 'Nova Lane', genre: 'Electronic', duration: '4:12', cover: '🌙', audio: 'placeholder-1.mp3' },
+  { id: 'n2', title: 'Aurora Drift', artist: 'Luma', genre: 'Synthwave', duration: '3:54', cover: '✨', audio: 'placeholder-2.mp3' },
+  { id: 'n3', title: 'City Lights', artist: 'Kairo', genre: 'Pop', duration: '4:06', cover: '🌃', audio: 'placeholder-3.mp3' }
 ];
 
 function showToast(message) {
@@ -62,12 +97,26 @@ function getTrackById(trackId) {
 }
 
 async function fetchTracks() {
-  const res = await fetch(`/api/tracks?q=${encodeURIComponent(appState.search)}`);
-  const data = await res.json();
-  renderTracks(data);
+  try {
+    const res = await fetch(`/api/tracks?q=${encodeURIComponent(appState.search)}`);
+    if (!res.ok) {
+      throw new Error(`API error: ${res.status}`);
+    }
+    const data = await res.json();
+    renderTracks(data);
+  } catch (error) {
+    console.error('Error fetching tracks:', error);
+    showToast('Failed to load tracks');
+    els.trackList.innerHTML = '<div class="empty">Unable to load tracks. Please try again.</div>';
+  }
 }
 
 function renderTracks(tracks) {
+  if (!tracks || !Array.isArray(tracks)) {
+    els.trackList.innerHTML = '<div class="empty">Invalid track data.</div>';
+    return;
+  }
+
   if (!tracks.length) {
     els.trackList.innerHTML = '<div class="empty">No tracks found.</div>';
     return;
@@ -75,7 +124,6 @@ function renderTracks(tracks) {
 
   els.trackList.innerHTML = tracks.map((track) => {
     const favorite = appState.favorites.includes(track.id);
-    const audioFile = getAudioUrl(track.id);
     const coverText = track.cover || '♪';
     return `
       <article class="track-card" data-id="${track.id}">
@@ -113,15 +161,11 @@ function renderTracks(tracks) {
 }
 
 function getAudioUrl(trackId) {
-  const map = {
-    m1: '/audio/MORGENSHTERN%20-%20%D0%9F%D0%B5%D1%80%D0%B2%D1%8B%D0%B9%20%D1%80%D0%B0%D0%B7.mp3',
-    m2: '/audio/MORGENSHTERN-%D0%93%D1%80%D1%83%D0%BF%D0%B0%20%D0%BA%D1%80%D0%BE%D0%B2%D0%B8.mp3',
-    m3: '/audio/Morgenshtern%20-%2012.mp3',
-    n1: '/audio/placeholder-1.mp3',
-    n2: '/audio/placeholder-2.mp3',
-    n3: '/audio/placeholder-3.mp3'
-  };
-  return map[trackId] || '';
+  const track = trackSeed.find((item) => item.id === trackId);
+  if (!track || !track.audio) {
+    return '';
+  }
+  return `/audio/${encodeURIComponent(track.audio)}`;
 }
 
 function getCoverGradient(trackId) {
@@ -129,6 +173,33 @@ function getCoverGradient(trackId) {
     m1: 'linear-gradient(135deg,#7C3AED,#22D3EE)',
     m2: 'linear-gradient(135deg,#EF4444,#F59E0B)',
     m3: 'linear-gradient(135deg,#10B981,#0EA5E9)',
+    m4: 'linear-gradient(135deg,#EC4899,#8B5CF6)',
+    m5: 'linear-gradient(135deg,#F97316,#FBBF24)',
+    m6: 'linear-gradient(135deg,#06B6D4,#0EA5E9)',
+    m7: 'linear-gradient(135deg,#8B5CF6,#EC4899)',
+    m8: 'linear-gradient(135deg,#0F172A,#334155)',
+    m9: 'linear-gradient(135deg,#F87171,#FB923C)',
+    m10: 'linear-gradient(135deg,#10B981,#14B8A6)',
+    m11: 'linear-gradient(135deg,#6366F1,#8B5CF6)',
+    m12: 'linear-gradient(135deg,#F59E0B,#FBBF24)',
+    m13: 'linear-gradient(135deg,#EF4444,#F87171)',
+    m14: 'linear-gradient(135deg,#1E293B,#475569)',
+    m15: 'linear-gradient(135deg,#7C3AED,#A78BFA)',
+    m16: 'linear-gradient(135deg,#06B6D4,#22D3EE)',
+    m17: 'linear-gradient(135deg,#EC4899,#F472B6)',
+    m18: 'linear-gradient(135deg,#0EA5E9,#38BDF8)',
+    m19: 'linear-gradient(135deg,#1F2937,#111827)',
+    m20: 'linear-gradient(135deg,#F97316,#FB923C)',
+    m21: 'linear-gradient(135deg,#FBBF24,#FCD34D)',
+    m22: 'linear-gradient(135deg,#EF4444,#DC2626)',
+    m23: 'linear-gradient(135deg,#EC4899,#DB2777)',
+    m24: 'linear-gradient(135deg,#F472B6,#EC4899)',
+    m25: 'linear-gradient(135deg,#1F2937,#374151)',
+    m26: 'linear-gradient(135deg,#7C3AED,#6366F1)',
+    m27: 'linear-gradient(135deg,#0EA5E9,#06B6D4)',
+    m28: 'linear-gradient(135deg,#F59E0B,#D97706)',
+    m29: 'linear-gradient(135deg,#10B981,#059669)',
+    m30: 'linear-gradient(135deg,#8B5CF6,#7C3AED)',
     n1: 'linear-gradient(135deg,#0F172A,#334155)',
     n2: 'linear-gradient(135deg,#EC4899,#8B5CF6)',
     n3: 'linear-gradient(135deg,#F97316,#FBBF24)'
@@ -195,12 +266,19 @@ function playTrack(trackId) {
     appState.audio.addEventListener('ended', () => {
       els.playToggle.textContent = '▶';
     });
+    appState.audio.addEventListener('error', () => {
+      showToast('Error loading audio');
+      console.error('Audio error:', appState.audio.error);
+    });
   }
 
   const src = getAudioUrl(trackId);
   if (src) {
     appState.audio.src = src;
-    appState.audio.play();
+    appState.audio.play().catch((error) => {
+      console.error('Playback error:', error);
+      showToast('Unable to play track');
+    });
   }
 
   appState.currentTrack = track;
@@ -280,6 +358,10 @@ els.authForm.addEventListener('submit', async (event) => {
       body: JSON.stringify(payload)
     });
 
+    if (!res.ok) {
+      throw new Error(`Login failed with status ${res.status}`);
+    }
+
     const result = await res.json();
     if (!result.ok) {
       showToast(result.message || 'Login failed');
@@ -291,6 +373,7 @@ els.authForm.addEventListener('submit', async (event) => {
     els.authModal.classList.add('hidden');
     showToast('Welcome back to CoreMusic');
   } catch (error) {
+    console.error('Login error:', error);
     showToast('Something went wrong');
   }
 });
